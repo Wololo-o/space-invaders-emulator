@@ -81,6 +81,7 @@ enum opcode {
     MOV_C_H,
     MOV_C_L,
     MOV_C_M,
+    MOV_C_A,
     MOV_D_A,
     MOV_D_B,
     MOV_D_C,

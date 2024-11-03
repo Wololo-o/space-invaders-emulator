@@ -47,6 +47,78 @@ void cpu_tick(CPU *cpu) {
     case NOP_ALT_6:
     case NOP_ALT_7:
         break;
+
+    case MOV_B_B: cpu->b = cpu->b;
+    case MOV_B_C: cpu->b = cpu->c;
+    case MOV_B_D: cpu->b = cpu->d;
+    case MOV_B_E: cpu->b = cpu->e;
+    case MOV_B_H: cpu->b = cpu->h;
+    case MOV_B_L: cpu->b = cpu->l;
+    case MOV_B_M: cpu->b = cpu->memory[get_hl(cpu)];
+    case MOV_B_A: cpu->b = cpu->a;
+
+    case MOV_C_B: cpu->c = cpu->b;
+    case MOV_C_C: cpu->c = cpu->c;
+    case MOV_C_D: cpu->c = cpu->d;
+    case MOV_C_E: cpu->c = cpu->e;
+    case MOV_C_H: cpu->c = cpu->h;
+    case MOV_C_L: cpu->c = cpu->l;
+    case MOV_C_M: cpu->c = cpu->memory[get_hl(cpu)];
+    case MOV_C_A: cpu->c = cpu->a;
+
+    case MOV_D_B: cpu->d = cpu->b;
+    case MOV_D_C: cpu->d = cpu->c;
+    case MOV_D_D: cpu->d = cpu->d;
+    case MOV_D_E: cpu->d = cpu->e;
+    case MOV_D_H: cpu->d = cpu->h;
+    case MOV_D_L: cpu->d = cpu->l;
+    case MOV_D_M: cpu->d = cpu->memory[get_hl(cpu)];
+    case MOV_D_A: cpu->d = cpu->a;
+
+    case MOV_E_B: cpu->e = cpu->b;
+    case MOV_E_C: cpu->e = cpu->c;
+    case MOV_E_D: cpu->e = cpu->d;
+    case MOV_E_E: cpu->e = cpu->e;
+    case MOV_E_H: cpu->e = cpu->h;
+    case MOV_E_L: cpu->e = cpu->l;
+    case MOV_E_M: cpu->e = cpu->memory[get_hl(cpu)];
+    case MOV_E_A: cpu->e = cpu->a;
+
+    case MOV_H_B: cpu->h = cpu->b;
+    case MOV_H_C: cpu->h = cpu->c;
+    case MOV_H_D: cpu->h = cpu->d;
+    case MOV_H_E: cpu->h = cpu->e;
+    case MOV_H_H: cpu->h = cpu->h;
+    case MOV_H_L: cpu->h = cpu->l;
+    case MOV_H_M: cpu->h = cpu->memory[get_hl(cpu)];
+    case MOV_H_A: cpu->h = cpu->a;
+
+    case MOV_L_B: cpu->l = cpu->b;
+    case MOV_L_C: cpu->l = cpu->c;
+    case MOV_L_D: cpu->l = cpu->d;
+    case MOV_L_E: cpu->l = cpu->e;
+    case MOV_L_H: cpu->l = cpu->h;
+    case MOV_L_L: cpu->l = cpu->l;
+    case MOV_L_M: cpu->l = cpu->memory[get_hl(cpu)];
+    case MOV_L_A: cpu->l = cpu->a;
+
+    case MOV_M_B: cpu->memory[get_hl(cpu)] = cpu->b;
+    case MOV_M_C: cpu->memory[get_hl(cpu)] = cpu->b;
+    case MOV_M_D: cpu->memory[get_hl(cpu)] = cpu->b;
+    case MOV_M_E: cpu->memory[get_hl(cpu)] = cpu->b;
+    case MOV_M_H: cpu->memory[get_hl(cpu)] = cpu->b;
+    case MOV_M_L: cpu->memory[get_hl(cpu)] = cpu->b;
+    case MOV_M_A: cpu->memory[get_hl(cpu)] = cpu->b;
+
+    case MOV_A_B: cpu->a = cpu->b;
+    case MOV_A_C: cpu->a = cpu->c;
+    case MOV_A_D: cpu->a = cpu->d;
+    case MOV_A_E: cpu->a = cpu->e;
+    case MOV_A_H: cpu->a = cpu->h;
+    case MOV_A_L: cpu->a = cpu->l;
+    case MOV_A_M: cpu->a = cpu->memory[get_hl(cpu)];
+    case MOV_A_A: cpu->a = cpu->a;
+
     default:
         break;
     }
