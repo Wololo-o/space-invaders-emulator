@@ -119,6 +119,15 @@ void cpu_tick(CPU *cpu) {
     case MOV_A_M: cpu->a = cpu->memory[get_hl(cpu)];
     case MOV_A_A: cpu->a = cpu->a;
 
+    case MVI_B: cpu->b = next_byte(cpu);
+    case MVI_C: cpu->c = next_byte(cpu);
+    case MVI_D: cpu->d = next_byte(cpu);
+    case MVI_E: cpu->e = next_byte(cpu);
+    case MVI_H: cpu->h = next_byte(cpu);
+    case MVI_L: cpu->l = next_byte(cpu);
+    case MVI_M: cpu->memory[get_hl(cpu)] = next_byte(cpu);
+    case MVI_A: cpu->a = next_byte(cpu);
+
     default:
         break;
     }
