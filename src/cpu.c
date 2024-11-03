@@ -47,6 +47,15 @@ void clear_flags(CPU *cpu) {
     cpu->f.ac = cpu->f.cy = cpu->f.p = cpu->f.s = cpu->f.z = 0;
 }
 
+uint8_t next_byte(CPU *cpu) {
+    return read_byte(cpu, cpu->pc++);
+}
+
+uint16_t next_word(CPU *cpu) {
+    cpu->pc += 2;
+    return read_word(cpu, cpu->pc - 2);
+}
+
 uint8_t read_byte(CPU *cpu, uint16_t address) {
     return cpu->memory[address];
 }
@@ -64,11 +73,29 @@ void write_word(CPU *cpu, uint16_t address, uint16_t value) {
     cpu->memory[address + 1] = value >> 8;
 }
 
-uint8_t next_byte(CPU *cpu) {
-    return read_byte(cpu, cpu->pc++);
+uint16_t get_bc(CPU *cpu) {
+    return ((cpu->b << 8) | cpu->c);
 }
 
-uint16_t next_word(CPU *cpu) {
-    cpu->pc += 2;
-    return read_word(cpu, cpu->pc - 2);
+uint16_t get_de(CPU *cpu) {
+    return ((cpu->d << 8) | cpu->e);
+}
+
+uint16_t get_hl(CPU *cpu) {
+    return ((cpu->h << 8) | cpu->l);
+}
+
+void set_bc(CPU *cpu, uint16_t value) {
+    cpu->b = value >> 8;
+    cpu->c = value & 0xff;
+}
+
+void set_de(CPU *cpu, uint16_t value) {
+    cpu->d = value >> 8;
+    cpu->e = value & 0xff;
+}
+
+void set_hl(CPU *cpu, uint16_t value) {
+    cpu->h = value >> 8;
+    cpu->l = value & 0xff;
 }

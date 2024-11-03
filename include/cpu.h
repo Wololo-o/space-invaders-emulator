@@ -34,26 +34,27 @@ typedef struct CPU {
     bool exit;
 } CPU;
 
+// Helper functions
 void cpu_init(CPU *cpu);
-
 bool cpu_load_rom_at(CPU *cpu, char const *filename, uint16_t start);
-
 void cpu_tick(CPU *cpu);
-
 void clear_flags(CPU *cpu);
-
-uint8_t read_byte(CPU *cpu, uint16_t address);
-
-void write_byte(CPU *cpu, uint16_t address, uint8_t value);
-
-uint16_t read_word(CPU *cpu, uint16_t address);
-
-void write_word(CPU *cpu, uint16_t address, uint16_t value);
-
 uint8_t next_byte(CPU *cpu);
-
 uint16_t next_word(CPU *cpu);
 
+// Memory read/write helper functions
+uint8_t read_byte(CPU *cpu, uint16_t address);
+void write_byte(CPU *cpu, uint16_t address, uint8_t value);
+uint16_t read_word(CPU *cpu, uint16_t address);
+void write_word(CPU *cpu, uint16_t address, uint16_t value);
+
+// Register access helper functions
+uint16_t get_bc(CPU *cpu);
+uint16_t get_de(CPU *cpu);
+uint16_t get_hl(CPU *cpu);
+void set_bc(CPU *cpu, uint16_t value);
+void set_de(CPU *cpu, uint16_t value);
+void set_hl(CPU *cpu, uint16_t value);
 
 
 #endif // CPU_H
