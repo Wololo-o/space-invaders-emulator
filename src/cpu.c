@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "cpu.h"
-
+#include "opcodes.h"
 
 void cpu_init(CPU *cpu) {
     cpu->exit = false;
@@ -38,6 +38,15 @@ void cpu_tick(CPU *cpu) {
     uint8_t opcode = cpu->memory[cpu->pc++];
 
     switch(opcode) {
+    case NOP:
+    case NOP_ALT_1:
+    case NOP_ALT_2:
+    case NOP_ALT_3:
+    case NOP_ALT_4:
+    case NOP_ALT_5:
+    case NOP_ALT_6:
+    case NOP_ALT_7:
+        break;
     default:
         break;
     }
