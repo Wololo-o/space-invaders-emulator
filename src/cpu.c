@@ -137,6 +137,7 @@ void cpu_tick(CPU *cpu) {
     case STA: write_byte(cpu, next_word(cpu), cpu->a);
 
     case SHLD: write_word(cpu, next_word(cpu), get_hl(cpu));
+    case LHLD: set_hl(cpu, read_word(cpu, next_word(cpu)));
 
     default:
         break;
