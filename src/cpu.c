@@ -133,6 +133,8 @@ void cpu_tick(CPU *cpu) {
     case LXI_H: set_hl(cpu, next_word(cpu));
     case LXI_SP: cpu->sp = next_word(cpu);
 
+    case LDA: cpu->a = cpu->memory[next_word(cpu)];
+
     default:
         break;
     }
