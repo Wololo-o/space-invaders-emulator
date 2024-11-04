@@ -139,14 +139,23 @@ void cpu_tick(CPU *cpu) {
     case XCHG: cpu_xchg(cpu);
 
     // Arithmetic group
-    case ADD_B: cpu_add(cpu, cpu->b);
-    case ADD_C: cpu_add(cpu, cpu->c);
-    case ADD_D: cpu_add(cpu, cpu->d);
-    case ADD_E: cpu_add(cpu, cpu->e);
-    case ADD_H: cpu_add(cpu, cpu->h);
-    case ADD_L: cpu_add(cpu, cpu->l);
-    case ADD_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)));
-    case ADD_A: cpu_add(cpu, cpu->a);
+    case ADD_B: cpu_add(cpu, cpu->b, false);
+    case ADD_C: cpu_add(cpu, cpu->c, false);
+    case ADD_D: cpu_add(cpu, cpu->d, false);
+    case ADD_E: cpu_add(cpu, cpu->e, false);
+    case ADD_H: cpu_add(cpu, cpu->h, false);
+    case ADD_L: cpu_add(cpu, cpu->l, false);
+    case ADD_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), false);
+    case ADD_A: cpu_add(cpu, cpu->a, false);
+
+    case ADC_B: cpu_add(cpu, cpu->b, true);
+    case ADC_C: cpu_add(cpu, cpu->c, true);
+    case ADC_D: cpu_add(cpu, cpu->d, true);
+    case ADC_E: cpu_add(cpu, cpu->e, true);
+    case ADC_H: cpu_add(cpu, cpu->h, true);
+    case ADC_L: cpu_add(cpu, cpu->l, true);
+    case ADC_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), true);
+    case ADC_A: cpu_add(cpu, cpu->a, true);
 
     // Logical group
 

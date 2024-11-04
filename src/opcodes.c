@@ -7,9 +7,9 @@ void cpu_xchg(CPU *cpu) {
     set_de(cpu, tmp);
 }
 
-void cpu_add(CPU *cpu, uint8_t value) {
-    update_ac_flag_add(cpu, cpu->a, value, false);
-    update_cy_flag_add(cpu, cpu->a, value, false);
-    cpu->a += value;
+void cpu_add(CPU *cpu, uint8_t value, bool is_carry) {
+    update_ac_flag_add(cpu, cpu->a, value, is_carry);
+    update_cy_flag_add(cpu, cpu->a, value, is_carry);
+    cpu->a += value + (is_carry ? 1 : 0);
     update_zsp_flags(cpu, cpu->a);
 }

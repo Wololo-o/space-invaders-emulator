@@ -264,6 +264,6 @@ enum opcode {
 
 void cpu_xchg(CPU *cpu);
 
-void cpu_add(CPU *cpu, uint8_t value);
+void cpu_add(CPU *cpu, uint8_t value, bool is_carry);
 
 #endif // OPCODES_H
