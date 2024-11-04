@@ -56,6 +56,13 @@ void set_bc(CPU *cpu, uint16_t value);
 void set_de(CPU *cpu, uint16_t value);
 void set_hl(CPU *cpu, uint16_t value);
 
+// Flags helper functions
+void update_zsp_flags(CPU *cpu, uint8_t res);
+void update_cy_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry);
+void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow);
+void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry);
+void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow);
+
 // cpu operations functions
 void cpu_xchg(CPU *cpu);
 

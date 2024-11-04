@@ -38,16 +38,8 @@ void cpu_tick(CPU *cpu) {
     uint8_t opcode = cpu->memory[cpu->pc++];
 
     switch(opcode) {
-    case NOP:
-    case NOP_ALT_1:
-    case NOP_ALT_2:
-    case NOP_ALT_3:
-    case NOP_ALT_4:
-    case NOP_ALT_5:
-    case NOP_ALT_6:
-    case NOP_ALT_7:
-        break;
 
+    // Data transfer group
     case MOV_B_B: cpu->b = cpu->b;
     case MOV_B_C: cpu->b = cpu->c;
     case MOV_B_D: cpu->b = cpu->d;
@@ -146,6 +138,23 @@ void cpu_tick(CPU *cpu) {
 
     case XCHG: cpu_xchg(cpu);
 
+    // Arithmetic group
+
+    // Logical group
+
+    // Branch group
+
+    // Stack, I/O and machine control group
+    case NOP:
+    case NOP_ALT_1:
+    case NOP_ALT_2:
+    case NOP_ALT_3:
+    case NOP_ALT_4:
+    case NOP_ALT_5:
+    case NOP_ALT_6:
+    case NOP_ALT_7:
+        break;
+
     default:
         break;
     }
@@ -206,6 +215,43 @@ void set_de(CPU *cpu, uint16_t value) {
 void set_hl(CPU *cpu, uint16_t value) {
     cpu->h = value >> 8;
     cpu->l = value & 0xff;
+}
+
+void update_zsp_flags(CPU *cpu, uint8_t res) {
+    uint8_t parity = 0;
+
+    cpu->f.z = !res;
+    cpu->f.s = (res >> 7) & 1;
+
+    while(res) {
+        parity += res & 1;
+        res >>= 1;
+    }
+    cpu->f.p = !(parity % 2);
+}
+
+void update_cy_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
+    uint8_t carry = is_carry ? cpu->f.cy : 0;
+    uint16_t res = val1 + val2 + carry;
+    cpu->f.cy = (res > 0xff);
+}
+
+void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
+    uint8_t borrow = is_borrow ? cpu->f.cy : 0;
+    uint16_t res = val1 + ~val2 + !borrow;
+    cpu->f.cy = (res > 0xff);
+}
+
+void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
+    uint8_t carry = is_carry ? cpu->f.cy : 0;
+    uint8_t res = (val1 & 0xf) + (val2 & 0xf) + carry;
+    cpu->f.cy = (res > 0xf);
+}
+
+void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
+    uint8_t borrow = is_borrow ? cpu->f.cy : 0;
+    uint8_t res = (val1 & 0xf) + ((~val2) & 0xf) + !borrow;
+    cpu->f.cy = (res > 0xf);
 }
 
 void cpu_xchg(CPU *cpu) {
