@@ -144,6 +144,8 @@ void cpu_tick(CPU *cpu) {
     case STAX_B: write_word(cpu, get_bc(cpu), cpu->a);
     case STAX_D: write_word(cpu, get_bc(cpu), cpu->a);
 
+    case XCHG: cpu_xchg(cpu);
+
     default:
         break;
     }
@@ -204,4 +206,11 @@ void set_de(CPU *cpu, uint16_t value) {
 void set_hl(CPU *cpu, uint16_t value) {
     cpu->h = value >> 8;
     cpu->l = value & 0xff;
+}
+
+void cpu_xchg(CPU *cpu) {
+    uint16_t tmp;
+    tmp = get_hl(cpu);
+    set_hl(cpu, get_de(cpu));
+    set_de(cpu, tmp);
 }

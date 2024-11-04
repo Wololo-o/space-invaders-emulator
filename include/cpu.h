@@ -56,5 +56,8 @@ void set_bc(CPU *cpu, uint16_t value);
 void set_de(CPU *cpu, uint16_t value);
 void set_hl(CPU *cpu, uint16_t value);
 
+// cpu operations functions
+void cpu_xchg(CPU *cpu);
+
 
 #endif // CPU_H
