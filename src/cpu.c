@@ -139,6 +139,14 @@ void cpu_tick(CPU *cpu) {
     case XCHG: cpu_xchg(cpu);
 
     // Arithmetic group
+    case ADD_B: cpu_add(cpu, cpu->b);
+    case ADD_C: cpu_add(cpu, cpu->c);
+    case ADD_D: cpu_add(cpu, cpu->d);
+    case ADD_E: cpu_add(cpu, cpu->e);
+    case ADD_H: cpu_add(cpu, cpu->h);
+    case ADD_L: cpu_add(cpu, cpu->l);
+    case ADD_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)));
+    case ADD_A: cpu_add(cpu, cpu->a);
 
     // Logical group
 
@@ -245,18 +253,13 @@ void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
 void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
     uint8_t carry = is_carry ? cpu->f.cy : 0;
     uint8_t res = (val1 & 0xf) + (val2 & 0xf) + carry;
-    cpu->f.cy = (res > 0xf);
+    cpu->f.ac = (res > 0xf);
 }
 
 void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
     uint8_t borrow = is_borrow ? cpu->f.cy : 0;
     uint8_t res = (val1 & 0xf) + ((~val2) & 0xf) + !borrow;
-    cpu->f.cy = (res > 0xf);
+    cpu->f.ac = (res > 0xf);
 }
 
-void cpu_xchg(CPU *cpu) {
-    uint16_t tmp;
-    tmp = get_hl(cpu);
-    set_hl(cpu, get_de(cpu));
-    set_de(cpu, tmp);
-}
+

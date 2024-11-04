@@ -63,8 +63,4 @@ void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow);
 void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry);
 void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow);
 
-// cpu operations functions
-void cpu_xchg(CPU *cpu);
-
-
 #endif // CPU_H

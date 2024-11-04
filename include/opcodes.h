@@ -1,6 +1,8 @@
 #ifndef OPCODES_H
 #define OPCODES_H
 
+#include "cpu.h"
+
 enum opcode {
     NOP,
     LXI_B,
@@ -82,7 +84,6 @@ enum opcode {
     MOV_C_L,
     MOV_C_M,
     MOV_C_A,
-    MOV_D_A,
     MOV_D_B,
     MOV_D_C,
     MOV_D_D,
@@ -90,7 +91,7 @@ enum opcode {
     MOV_D_H,
     MOV_D_L,
     MOV_D_M,
-    MOV_E_A,
+    MOV_D_A,
     MOV_E_B,
     MOV_E_C,
     MOV_E_D,
@@ -98,7 +99,7 @@ enum opcode {
     MOV_E_H,
     MOV_E_L,
     MOV_E_M,
-    MOV_H_A,
+    MOV_E_A,
     MOV_H_B,
     MOV_H_C,
     MOV_H_D,
@@ -106,7 +107,7 @@ enum opcode {
     MOV_H_H,
     MOV_H_L,
     MOV_H_M,
-    MOV_L_A,
+    MOV_H_A,
     MOV_L_B,
     MOV_L_C,
     MOV_L_D,
@@ -114,7 +115,7 @@ enum opcode {
     MOV_L_H,
     MOV_L_L,
     MOV_L_M,
-    MOV_B_A,
+    MOV_L_A,
     MOV_M_B,
     MOV_M_C,
     MOV_M_D,
@@ -261,9 +262,8 @@ enum opcode {
     RST_7
 };
 
+void cpu_xchg(CPU *cpu);
 
-
-
-
+void cpu_add(CPU *cpu, uint8_t value);
 
 #endif // OPCODES_H
