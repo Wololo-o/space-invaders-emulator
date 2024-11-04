@@ -40,122 +40,122 @@ void cpu_tick(CPU *cpu) {
     switch(opcode) {
 
     // Data transfer group
-    case MOV_B_B: cpu->b = cpu->b;
-    case MOV_B_C: cpu->b = cpu->c;
-    case MOV_B_D: cpu->b = cpu->d;
-    case MOV_B_E: cpu->b = cpu->e;
-    case MOV_B_H: cpu->b = cpu->h;
-    case MOV_B_L: cpu->b = cpu->l;
-    case MOV_B_M: cpu->b = cpu->memory[get_hl(cpu)];
-    case MOV_B_A: cpu->b = cpu->a;
+    case MOV_B_B: cpu->b = cpu->b; break;
+    case MOV_B_C: cpu->b = cpu->c; break;
+    case MOV_B_D: cpu->b = cpu->d; break;
+    case MOV_B_E: cpu->b = cpu->e; break;
+    case MOV_B_H: cpu->b = cpu->h; break;
+    case MOV_B_L: cpu->b = cpu->l; break;
+    case MOV_B_M: cpu->b = cpu->memory[get_hl(cpu)]; break;
+    case MOV_B_A: cpu->b = cpu->a; break;
 
-    case MOV_C_B: cpu->c = cpu->b;
-    case MOV_C_C: cpu->c = cpu->c;
-    case MOV_C_D: cpu->c = cpu->d;
-    case MOV_C_E: cpu->c = cpu->e;
-    case MOV_C_H: cpu->c = cpu->h;
-    case MOV_C_L: cpu->c = cpu->l;
-    case MOV_C_M: cpu->c = cpu->memory[get_hl(cpu)];
-    case MOV_C_A: cpu->c = cpu->a;
+    case MOV_C_B: cpu->c = cpu->b; break;
+    case MOV_C_C: cpu->c = cpu->c; break;
+    case MOV_C_D: cpu->c = cpu->d; break;
+    case MOV_C_E: cpu->c = cpu->e; break;
+    case MOV_C_H: cpu->c = cpu->h; break;
+    case MOV_C_L: cpu->c = cpu->l; break;
+    case MOV_C_M: cpu->c = cpu->memory[get_hl(cpu)]; break;
+    case MOV_C_A: cpu->c = cpu->a; break;
 
-    case MOV_D_B: cpu->d = cpu->b;
-    case MOV_D_C: cpu->d = cpu->c;
-    case MOV_D_D: cpu->d = cpu->d;
-    case MOV_D_E: cpu->d = cpu->e;
-    case MOV_D_H: cpu->d = cpu->h;
-    case MOV_D_L: cpu->d = cpu->l;
-    case MOV_D_M: cpu->d = cpu->memory[get_hl(cpu)];
-    case MOV_D_A: cpu->d = cpu->a;
+    case MOV_D_B: cpu->d = cpu->b; break;
+    case MOV_D_C: cpu->d = cpu->c; break;
+    case MOV_D_D: cpu->d = cpu->d; break;
+    case MOV_D_E: cpu->d = cpu->e; break;
+    case MOV_D_H: cpu->d = cpu->h; break;
+    case MOV_D_L: cpu->d = cpu->l; break;
+    case MOV_D_M: cpu->d = cpu->memory[get_hl(cpu)]; break;
+    case MOV_D_A: cpu->d = cpu->a; break;
 
-    case MOV_E_B: cpu->e = cpu->b;
-    case MOV_E_C: cpu->e = cpu->c;
-    case MOV_E_D: cpu->e = cpu->d;
-    case MOV_E_E: cpu->e = cpu->e;
-    case MOV_E_H: cpu->e = cpu->h;
-    case MOV_E_L: cpu->e = cpu->l;
-    case MOV_E_M: cpu->e = cpu->memory[get_hl(cpu)];
-    case MOV_E_A: cpu->e = cpu->a;
+    case MOV_E_B: cpu->e = cpu->b; break;
+    case MOV_E_C: cpu->e = cpu->c; break;
+    case MOV_E_D: cpu->e = cpu->d; break;
+    case MOV_E_E: cpu->e = cpu->e; break;
+    case MOV_E_H: cpu->e = cpu->h; break;
+    case MOV_E_L: cpu->e = cpu->l; break;
+    case MOV_E_M: cpu->e = cpu->memory[get_hl(cpu)]; break;
+    case MOV_E_A: cpu->e = cpu->a; break;
 
-    case MOV_H_B: cpu->h = cpu->b;
-    case MOV_H_C: cpu->h = cpu->c;
-    case MOV_H_D: cpu->h = cpu->d;
-    case MOV_H_E: cpu->h = cpu->e;
-    case MOV_H_H: cpu->h = cpu->h;
-    case MOV_H_L: cpu->h = cpu->l;
-    case MOV_H_M: cpu->h = cpu->memory[get_hl(cpu)];
-    case MOV_H_A: cpu->h = cpu->a;
+    case MOV_H_B: cpu->h = cpu->b; break;
+    case MOV_H_C: cpu->h = cpu->c; break;
+    case MOV_H_D: cpu->h = cpu->d; break;
+    case MOV_H_E: cpu->h = cpu->e; break;
+    case MOV_H_H: cpu->h = cpu->h; break;
+    case MOV_H_L: cpu->h = cpu->l; break;
+    case MOV_H_M: cpu->h = cpu->memory[get_hl(cpu)]; break;
+    case MOV_H_A: cpu->h = cpu->a; break;
 
-    case MOV_L_B: cpu->l = cpu->b;
-    case MOV_L_C: cpu->l = cpu->c;
-    case MOV_L_D: cpu->l = cpu->d;
-    case MOV_L_E: cpu->l = cpu->e;
-    case MOV_L_H: cpu->l = cpu->h;
-    case MOV_L_L: cpu->l = cpu->l;
-    case MOV_L_M: cpu->l = cpu->memory[get_hl(cpu)];
-    case MOV_L_A: cpu->l = cpu->a;
+    case MOV_L_B: cpu->l = cpu->b; break;
+    case MOV_L_C: cpu->l = cpu->c; break;
+    case MOV_L_D: cpu->l = cpu->d; break;
+    case MOV_L_E: cpu->l = cpu->e; break;
+    case MOV_L_H: cpu->l = cpu->h; break;
+    case MOV_L_L: cpu->l = cpu->l; break;
+    case MOV_L_M: cpu->l = cpu->memory[get_hl(cpu)]; break;
+    case MOV_L_A: cpu->l = cpu->a; break;
 
-    case MOV_M_B: cpu->memory[get_hl(cpu)] = cpu->b;
-    case MOV_M_C: cpu->memory[get_hl(cpu)] = cpu->b;
-    case MOV_M_D: cpu->memory[get_hl(cpu)] = cpu->b;
-    case MOV_M_E: cpu->memory[get_hl(cpu)] = cpu->b;
-    case MOV_M_H: cpu->memory[get_hl(cpu)] = cpu->b;
-    case MOV_M_L: cpu->memory[get_hl(cpu)] = cpu->b;
-    case MOV_M_A: cpu->memory[get_hl(cpu)] = cpu->b;
+    case MOV_M_B: cpu->memory[get_hl(cpu)] = cpu->b; break;
+    case MOV_M_C: cpu->memory[get_hl(cpu)] = cpu->b; break;
+    case MOV_M_D: cpu->memory[get_hl(cpu)] = cpu->b; break;
+    case MOV_M_E: cpu->memory[get_hl(cpu)] = cpu->b; break;
+    case MOV_M_H: cpu->memory[get_hl(cpu)] = cpu->b; break;
+    case MOV_M_L: cpu->memory[get_hl(cpu)] = cpu->b; break;
+    case MOV_M_A: cpu->memory[get_hl(cpu)] = cpu->b; break;
 
-    case MOV_A_B: cpu->a = cpu->b;
-    case MOV_A_C: cpu->a = cpu->c;
-    case MOV_A_D: cpu->a = cpu->d;
-    case MOV_A_E: cpu->a = cpu->e;
-    case MOV_A_H: cpu->a = cpu->h;
-    case MOV_A_L: cpu->a = cpu->l;
-    case MOV_A_M: cpu->a = cpu->memory[get_hl(cpu)];
-    case MOV_A_A: cpu->a = cpu->a;
+    case MOV_A_B: cpu->a = cpu->b; break;
+    case MOV_A_C: cpu->a = cpu->c; break;
+    case MOV_A_D: cpu->a = cpu->d; break;
+    case MOV_A_E: cpu->a = cpu->e; break;
+    case MOV_A_H: cpu->a = cpu->h; break;
+    case MOV_A_L: cpu->a = cpu->l; break;
+    case MOV_A_M: cpu->a = cpu->memory[get_hl(cpu)]; break;
+    case MOV_A_A: cpu->a = cpu->a; break;
 
-    case MVI_B: cpu->b = next_byte(cpu);
-    case MVI_C: cpu->c = next_byte(cpu);
-    case MVI_D: cpu->d = next_byte(cpu);
-    case MVI_E: cpu->e = next_byte(cpu);
-    case MVI_H: cpu->h = next_byte(cpu);
-    case MVI_L: cpu->l = next_byte(cpu);
-    case MVI_M: cpu->memory[get_hl(cpu)] = next_byte(cpu);
-    case MVI_A: cpu->a = next_byte(cpu);
+    case MVI_B: cpu->b = next_byte(cpu); break;
+    case MVI_C: cpu->c = next_byte(cpu); break;
+    case MVI_D: cpu->d = next_byte(cpu); break;
+    case MVI_E: cpu->e = next_byte(cpu); break;
+    case MVI_H: cpu->h = next_byte(cpu); break;
+    case MVI_L: cpu->l = next_byte(cpu); break;
+    case MVI_M: cpu->memory[get_hl(cpu)] = next_byte(cpu); break;
+    case MVI_A: cpu->a = next_byte(cpu); break;
 
-    case LXI_B: set_bc(cpu, next_word(cpu));
-    case LXI_D: set_de(cpu, next_word(cpu));
-    case LXI_H: set_hl(cpu, next_word(cpu));
-    case LXI_SP: cpu->sp = next_word(cpu);
+    case LXI_B: set_bc(cpu, next_word(cpu)); break;
+    case LXI_D: set_de(cpu, next_word(cpu)); break;
+    case LXI_H: set_hl(cpu, next_word(cpu)); break;
+    case LXI_SP: cpu->sp = next_word(cpu); break;
 
-    case LDA: cpu->a = read_byte(cpu, next_word(cpu));
-    case STA: write_byte(cpu, next_word(cpu), cpu->a);
+    case LDA: cpu->a = read_byte(cpu, next_word(cpu)); break;
+    case STA: write_byte(cpu, next_word(cpu), cpu->a); break;
 
-    case SHLD: write_word(cpu, next_word(cpu), get_hl(cpu));
-    case LHLD: set_hl(cpu, read_word(cpu, next_word(cpu)));
+    case SHLD: write_word(cpu, next_word(cpu), get_hl(cpu)); break;
+    case LHLD: set_hl(cpu, read_word(cpu, next_word(cpu))); break;
 
-    case LDAX_B: cpu->a = read_word(cpu, get_bc(cpu));
-    case LDAX_D: cpu->a = read_word(cpu, get_de(cpu));
-    case STAX_B: write_word(cpu, get_bc(cpu), cpu->a);
-    case STAX_D: write_word(cpu, get_bc(cpu), cpu->a);
+    case LDAX_B: cpu->a = read_word(cpu, get_bc(cpu)); break;
+    case LDAX_D: cpu->a = read_word(cpu, get_de(cpu)); break;
+    case STAX_B: write_word(cpu, get_bc(cpu), cpu->a); break;
+    case STAX_D: write_word(cpu, get_bc(cpu), cpu->a); break;
 
-    case XCHG: cpu_xchg(cpu);
+    case XCHG: cpu_xchg(cpu); break;
 
     // Arithmetic group
-    case ADD_B: cpu_add(cpu, cpu->b, false);
-    case ADD_C: cpu_add(cpu, cpu->c, false);
-    case ADD_D: cpu_add(cpu, cpu->d, false);
-    case ADD_E: cpu_add(cpu, cpu->e, false);
-    case ADD_H: cpu_add(cpu, cpu->h, false);
-    case ADD_L: cpu_add(cpu, cpu->l, false);
-    case ADD_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), false);
-    case ADD_A: cpu_add(cpu, cpu->a, false);
+    case ADD_B: cpu_add(cpu, cpu->b, false); break;
+    case ADD_C: cpu_add(cpu, cpu->c, false); break;
+    case ADD_D: cpu_add(cpu, cpu->d, false); break;
+    case ADD_E: cpu_add(cpu, cpu->e, false); break;
+    case ADD_H: cpu_add(cpu, cpu->h, false); break;
+    case ADD_L: cpu_add(cpu, cpu->l, false); break;
+    case ADD_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), false); break;
+    case ADD_A: cpu_add(cpu, cpu->a, false); break;
 
-    case ADC_B: cpu_add(cpu, cpu->b, true);
-    case ADC_C: cpu_add(cpu, cpu->c, true);
-    case ADC_D: cpu_add(cpu, cpu->d, true);
-    case ADC_E: cpu_add(cpu, cpu->e, true);
-    case ADC_H: cpu_add(cpu, cpu->h, true);
-    case ADC_L: cpu_add(cpu, cpu->l, true);
-    case ADC_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), true);
-    case ADC_A: cpu_add(cpu, cpu->a, true);
+    case ADC_B: cpu_add(cpu, cpu->b, true); break;
+    case ADC_C: cpu_add(cpu, cpu->c, true); break;
+    case ADC_D: cpu_add(cpu, cpu->d, true); break;
+    case ADC_E: cpu_add(cpu, cpu->e, true); break;
+    case ADC_H: cpu_add(cpu, cpu->h, true); break;
+    case ADC_L: cpu_add(cpu, cpu->l, true); break;
+    case ADC_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), true); break;
+    case ADC_A: cpu_add(cpu, cpu->a, true); break;
 
     // Logical group
 
