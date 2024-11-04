@@ -128,6 +128,11 @@ void cpu_tick(CPU *cpu) {
     case MVI_M: cpu->memory[get_hl(cpu)] = next_byte(cpu);
     case MVI_A: cpu->a = next_byte(cpu);
 
+    case LXI_B: set_bc(cpu, next_word(cpu));
+    case LXI_D: set_de(cpu, next_word(cpu));
+    case LXI_H: set_hl(cpu, next_word(cpu));
+    case LXI_SP: cpu->sp = next_word(cpu);
+
     default:
         break;
     }
