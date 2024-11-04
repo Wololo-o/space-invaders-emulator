@@ -134,6 +134,7 @@ void cpu_tick(CPU *cpu) {
     case LXI_SP: cpu->sp = next_word(cpu);
 
     case LDA: cpu->a = read_byte(cpu, next_word(cpu));
+    case STA: write_byte(cpu, next_word(cpu), cpu->a);
 
     case SHLD: write_word(cpu, next_word(cpu), get_hl(cpu));
 
