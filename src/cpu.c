@@ -148,6 +148,8 @@ void cpu_tick(CPU *cpu) {
     case ADD_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), false); break;
     case ADD_A: cpu_add(cpu, cpu->a, false); break;
 
+    case ADI: cpu_add(cpu, next_byte(cpu), false); break;
+
     case ADC_B: cpu_add(cpu, cpu->b, true); break;
     case ADC_C: cpu_add(cpu, cpu->c, true); break;
     case ADC_D: cpu_add(cpu, cpu->d, true); break;
@@ -156,6 +158,8 @@ void cpu_tick(CPU *cpu) {
     case ADC_L: cpu_add(cpu, cpu->l, true); break;
     case ADC_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), true); break;
     case ADC_A: cpu_add(cpu, cpu->a, true); break;
+
+    case ACI: cpu_add(cpu, next_byte(cpu), true); break;
 
     // Logical group
 
