@@ -64,5 +64,62 @@ int main(int argc, char const *argv[]) {
     cpu_add(&cpu, 0, true);
     assert(cpu.f.ac);
 
+    // sub - z flag
+    cpu.a = 1;
+    cpu_sub(&cpu, 1, false);
+    assert(cpu.f.z);
+
+    // sub - s flag
+    cpu.a = 0;
+    cpu_sub(&cpu, 1, false);
+    assert(cpu.f.s);
+
+    // sub - p flag
+    cpu.a = 6;
+    cpu_sub(&cpu, 3, false);
+    assert(cpu.f.p);
+
+    // sub - cy flag
+    cpu.a = 0;
+    cpu_sub(&cpu, 1, false);
+    assert(cpu.f.cy);
+
+    // sub - ac flag
+    cpu.a = 0x0f;
+    cpu_sub(&cpu, 1, false);
+    assert(cpu.f.ac);
+
+    // sbb - z flag
+    cpu.a = 1;
+    cpu.f.cy = 1;
+    cpu_sub(&cpu, 0, true);
+    assert(cpu.f.z);
+
+    // sbb - s flag
+    cpu.a = 0;
+    cpu.f.cy = 1;
+    cpu_sub(&cpu, 0, true);
+    assert(cpu.f.s);
+
+    // sbb - p flag
+    cpu.a = 6;
+    cpu.f.cy = 1;
+    cpu_sub(&cpu, 2, true);
+    assert(cpu.f.p);
+
+    // sbb - cy flag
+    cpu.a = 0;
+    cpu.f.cy = 1;
+    cpu_sub(&cpu, 0, true);
+    assert(cpu.f.cy);
+
+    // sbb - ac flag
+    cpu.a = 0x10;
+    cpu.f.cy = 1;
+    cpu_sub(&cpu, 0, true);
+    assert(cpu.f.ac);
+
+
+
     return 0;
 }

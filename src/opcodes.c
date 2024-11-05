@@ -13,3 +13,10 @@ void cpu_add(CPU *cpu, uint8_t value, bool is_carry) {
     cpu->a += value + (is_carry ? 1 : 0);
     update_zsp_flags(cpu, cpu->a);
 }
+
+void cpu_sub(CPU *cpu, uint8_t value, bool is_borrow) {
+    update_ac_flag_sub(cpu, cpu->a, value, is_borrow);
+    update_cy_flag_sub(cpu, cpu->a, value, is_borrow);
+    cpu->a -= value + (is_borrow ? 1 : 0);
+    update_zsp_flags(cpu, cpu->a);
+}

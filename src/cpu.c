@@ -160,6 +160,28 @@ void cpu_tick(CPU *cpu) {
     case ADC_A: cpu_add(cpu, cpu->a, true); break;
 
     case ACI: cpu_add(cpu, next_byte(cpu), true); break;
+    
+    case SUB_B: cpu_sub(cpu, cpu->b, false); break;
+    case SUB_C: cpu_sub(cpu, cpu->c, false); break;
+    case SUB_D: cpu_sub(cpu, cpu->d, false); break;
+    case SUB_E: cpu_sub(cpu, cpu->e, false); break;
+    case SUB_H: cpu_sub(cpu, cpu->h, false); break;
+    case SUB_L: cpu_sub(cpu, cpu->l, false); break;
+    case SUB_M: cpu_sub(cpu, read_byte(cpu, get_hl(cpu)), false); break;
+    case SUB_A: cpu_sub(cpu, cpu->a, false); break;
+
+    case SUI: cpu_sub(cpu, next_byte(cpu), false); break;
+
+    case SBB_B: cpu_sub(cpu, cpu->b, true); break;
+    case SBB_C: cpu_sub(cpu, cpu->c, true); break;
+    case SBB_D: cpu_sub(cpu, cpu->d, true); break;
+    case SBB_E: cpu_sub(cpu, cpu->e, true); break;
+    case SBB_H: cpu_sub(cpu, cpu->h, true); break;
+    case SBB_L: cpu_sub(cpu, cpu->l, true); break;
+    case SBB_M: cpu_sub(cpu, read_byte(cpu, get_hl(cpu)), true); break;
+    case SBB_A: cpu_sub(cpu, cpu->a, true); break;
+
+    case SBI: cpu_sub(cpu, next_byte(cpu), true); break;
 
     // Logical group
 
@@ -259,20 +281,20 @@ void update_cy_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
 
 void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
     uint8_t borrow = is_borrow ? cpu->f.cy : 0;
-    uint16_t res = val1 + ~val2 + !borrow;
+    uint16_t res = val1 + (~val2 + 1) + (~borrow + 1);
     cpu->f.cy = (res > 0xff);
 }
 
 void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
     uint8_t carry = is_carry ? cpu->f.cy : 0;
     uint8_t res = (val1 & 0xf) + (val2 & 0xf) + carry;
-    cpu->f.ac = (res > 0xf);
+    cpu->f.ac = ((res & 0x10) >> 4);
 }
 
 void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
     uint8_t borrow = is_borrow ? cpu->f.cy : 0;
-    uint8_t res = (val1 & 0xf) + ((~val2) & 0xf) + !borrow;
-    cpu->f.ac = (res > 0xf);
+    uint8_t res = (val1 & 0x0f) + ((~val2 + 1) & 0x0f) + ((~borrow + 1) & 0x0f);
+    cpu->f.ac = ((res & 0x10) >> 4);
 }
 
 
