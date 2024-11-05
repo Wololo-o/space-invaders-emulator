@@ -202,14 +202,19 @@ void cpu_tick(CPU *cpu) {
     case DCR_A: cpu_dcr(cpu, &cpu->a); break;
 
     case INX_B: set_bc(cpu, get_bc(cpu) + 1); break;
-    case INX_D:  set_de(cpu, get_de(cpu) + 1); break;
-    case INX_H:  set_hl(cpu, get_hl(cpu) + 1); break;
-    case INX_SP:  ++(cpu->sp); break;
+    case INX_D: set_de(cpu, get_de(cpu) + 1); break;
+    case INX_H: set_hl(cpu, get_hl(cpu) + 1); break;
+    case INX_SP: ++(cpu->sp); break;
 
     case DCX_B: set_bc(cpu, get_bc(cpu) - 1); break;
-    case DCX_D:  set_de(cpu, get_de(cpu) - 1); break;
-    case DCX_H:  set_hl(cpu, get_hl(cpu) - 1); break;
-    case DCX_SP:  --(cpu->sp); break;
+    case DCX_D: set_de(cpu, get_de(cpu) - 1); break;
+    case DCX_H: set_hl(cpu, get_hl(cpu) - 1); break;
+    case DCX_SP: --(cpu->sp); break;
+
+    case DAD_B: cpu->f.cy = ((uint32_t)(get_hl(cpu) + get_bc(cpu)) > 0xffff); set_hl(cpu, get_hl(cpu) + get_bc(cpu)); break;
+    case DAD_D: cpu->f.cy = ((uint32_t)(get_hl(cpu) + get_de(cpu)) > 0xffff); set_hl(cpu, get_hl(cpu) + get_de(cpu)); break;
+    case DAD_H: cpu->f.cy = (get_hl(cpu) >= 0x8000); set_hl(cpu, get_hl(cpu) + get_hl(cpu)); break;
+    case DAD_SP: cpu->f.cy = ((uint32_t)get_hl(cpu) + cpu->sp > 0xffff); set_hl(cpu, get_hl(cpu) + cpu->sp); break;
 
     // Logical group
 
