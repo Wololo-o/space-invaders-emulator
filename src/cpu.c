@@ -206,6 +206,11 @@ void cpu_tick(CPU *cpu) {
     case INX_H:  set_hl(cpu, get_hl(cpu) + 1); break;
     case INX_SP:  ++(cpu->sp); break;
 
+    case DCX_B: set_bc(cpu, get_bc(cpu) - 1); break;
+    case DCX_D:  set_de(cpu, get_de(cpu) - 1); break;
+    case DCX_H:  set_hl(cpu, get_hl(cpu) - 1); break;
+    case DCX_SP:  --(cpu->sp); break;
+
     // Logical group
 
     // Branch group
