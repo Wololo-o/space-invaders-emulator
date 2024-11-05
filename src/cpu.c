@@ -183,6 +183,15 @@ void cpu_tick(CPU *cpu) {
 
     case SBI: cpu_sub(cpu, next_byte(cpu), true); break;
 
+    case INR_B: cpu_inr(cpu, &cpu->b); break;
+    case INR_C: cpu_inr(cpu, &cpu->c); break;
+    case INR_D: cpu_inr(cpu, &cpu->d); break;
+    case INR_E: cpu_inr(cpu, &cpu->e); break;
+    case INR_H: cpu_inr(cpu, &cpu->h); break;
+    case INR_L: cpu_inr(cpu, &cpu->l); break;
+    case INR_M: cpu_inr(cpu, cpu->memory + get_hl(cpu)); break;
+    case INR_A: cpu_inr(cpu, &cpu->a); break;
+
     // Logical group
 
     // Branch group
@@ -296,5 +305,3 @@ void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
     uint8_t res = (val1 & 0x0f) + ((~val2 + 1) & 0x0f) + ((~borrow + 1) & 0x0f);
     cpu->f.ac = ((res & 0x10) >> 4);
 }
-
-

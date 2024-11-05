@@ -20,3 +20,9 @@ void cpu_sub(CPU *cpu, uint8_t value, bool is_borrow) {
     cpu->a -= value + (is_borrow ? 1 : 0);
     update_zsp_flags(cpu, cpu->a);
 }
+
+void cpu_inr(CPU *cpu, uint8_t * const rm) {
+    update_ac_flag_add(cpu, *rm, 1, false);
+    ++(*rm);
+    update_zsp_flags(cpu, *rm);
+}

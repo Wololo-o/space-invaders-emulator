@@ -267,4 +267,6 @@ void cpu_xchg(CPU *cpu);
 void cpu_add(CPU *cpu, uint8_t value, bool is_carry);
 void cpu_sub(CPU *cpu, uint8_t value, bool is_borrow);
 
+void cpu_inr(CPU *cpu, uint8_t * const rm);
+
 #endif // OPCODES_H
