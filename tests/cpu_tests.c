@@ -139,6 +139,26 @@ int main(int argc, char const *argv[]) {
     cpu_inr(&cpu, cpu.memory + 0x1000);
     assert(cpu.f.ac);
 
+    // dcr - z flag
+    cpu.a = 1;
+    cpu_dcr(&cpu, &cpu.a);
+    assert(cpu.f.z);
+
+    // dcr - s flag
+    cpu.a = -2;
+    cpu_dcr(&cpu, &cpu.a);
+    assert(cpu.f.s);
+
+    // dcr - p flag
+    write_byte(&cpu, 0x1000, 4);
+    cpu_dcr(&cpu, cpu.memory + 0x1000);
+    assert(cpu.f.p);
+
+    // dcr - ac flag
+    write_byte(&cpu, 0x1000, 0x0f);
+    cpu_dcr(&cpu, cpu.memory + 0x1000);
+    assert(cpu.f.ac);
+
 
     return 0;
 }

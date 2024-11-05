@@ -192,6 +192,15 @@ void cpu_tick(CPU *cpu) {
     case INR_M: cpu_inr(cpu, cpu->memory + get_hl(cpu)); break;
     case INR_A: cpu_inr(cpu, &cpu->a); break;
 
+    case DCR_B: cpu_dcr(cpu, &cpu->b); break;
+    case DCR_C: cpu_dcr(cpu, &cpu->c); break;
+    case DCR_D: cpu_dcr(cpu, &cpu->d); break;
+    case DCR_E: cpu_dcr(cpu, &cpu->e); break;
+    case DCR_H: cpu_dcr(cpu, &cpu->h); break;
+    case DCR_L: cpu_dcr(cpu, &cpu->l); break;
+    case DCR_M: cpu_dcr(cpu, cpu->memory + get_hl(cpu)); break;
+    case DCR_A: cpu_dcr(cpu, &cpu->a); break;
+
     // Logical group
 
     // Branch group

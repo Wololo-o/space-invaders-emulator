@@ -26,3 +26,9 @@ void cpu_inr(CPU *cpu, uint8_t * const rm) {
     ++(*rm);
     update_zsp_flags(cpu, *rm);
 }
+
+void cpu_dcr(CPU *cpu, uint8_t * const rm) {
+    update_ac_flag_sub(cpu, *rm, 1, false);
+    --(*rm);
+    update_zsp_flags(cpu, *rm);
+}
