@@ -42,3 +42,15 @@ void cpu_daa(CPU *cpu) {
     cpu->a += to_add;
     update_zsp_flags(cpu, cpu->a);
 }
+
+void cpu_ana(CPU *cpu, uint8_t * const rm) {
+    cpu->a &= *rm;
+    update_zsp_flags(cpu, cpu->a);
+    cpu->f.cy = 0;
+}
+
+void cpu_ani(CPU *cpu) {
+    cpu->a &= next_byte(cpu);
+    update_zsp_flags(cpu, cpu->a);
+    cpu->f.cy = 0;
+}

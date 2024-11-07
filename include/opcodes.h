@@ -272,4 +272,7 @@ void cpu_dcr(CPU *cpu, uint8_t * const rm);
 
 void cpu_daa(CPU *cpu);
 
+void cpu_ana(CPU *cpu, uint8_t * const rm);
+void cpu_ani(CPU *cpu);
+
 #endif // OPCODES_H

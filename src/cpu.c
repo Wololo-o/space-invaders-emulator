@@ -219,6 +219,16 @@ void cpu_tick(CPU *cpu) {
     case DAA: cpu_daa(cpu); break;
 
     // Logical group
+    case ANA_B: cpu_ana(cpu, &cpu->b); break;
+    case ANA_C: cpu_ana(cpu, &cpu->c); break;
+    case ANA_D: cpu_ana(cpu, &cpu->d); break;
+    case ANA_E: cpu_ana(cpu, &cpu->e); break;
+    case ANA_H: cpu_ana(cpu, &cpu->h); break;
+    case ANA_L: cpu_ana(cpu, &cpu->l); break;
+    case ANA_M: cpu_ana(cpu, cpu->memory + get_hl(cpu)); break;
+    case ANA_A: cpu_ana(cpu, &cpu->a); break;
+
+    case ANI: cpu_ani(cpu); break;
 
     // Branch group
 
