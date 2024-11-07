@@ -229,6 +229,17 @@ void cpu_tick(CPU *cpu) {
     case ANA_A: cpu_ana(cpu, &cpu->a); break;
 
     case ANI: cpu_ani(cpu); break;
+    
+    case XRA_B: cpu_xra(cpu, &cpu->b); break;
+    case XRA_C: cpu_xra(cpu, &cpu->c); break;
+    case XRA_D: cpu_xra(cpu, &cpu->d); break;
+    case XRA_E: cpu_xra(cpu, &cpu->e); break;
+    case XRA_H: cpu_xra(cpu, &cpu->h); break;
+    case XRA_L: cpu_xra(cpu, &cpu->l); break;
+    case XRA_M: cpu_xra(cpu, cpu->memory + get_hl(cpu)); break;
+    case XRA_A: cpu_xra(cpu, &cpu->a); break;
+
+    case XRI: cpu_xri(cpu); break;
 
     // Branch group
 

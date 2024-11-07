@@ -53,4 +53,19 @@ void cpu_ani(CPU *cpu) {
     cpu->a &= next_byte(cpu);
     update_zsp_flags(cpu, cpu->a);
     cpu->f.cy = 0;
+    cpu->f.ac = 0;
+}
+
+void cpu_xra(CPU *cpu, uint8_t * const rm) {
+    cpu->a ^= *rm;
+    update_zsp_flags(cpu, cpu->a);
+    cpu->f.cy = 0;
+    cpu->f.ac = 0;
+}
+
+void cpu_xri(CPU *cpu) {
+    cpu->a ^= next_byte(cpu);
+    update_zsp_flags(cpu, cpu->a);
+    cpu->f.cy = 0;
+    cpu->f.ac = 0;
 }
