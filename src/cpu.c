@@ -216,6 +216,8 @@ void cpu_tick(CPU *cpu) {
     case DAD_H: cpu->f.cy = (get_hl(cpu) >= 0x8000); set_hl(cpu, get_hl(cpu) + get_hl(cpu)); break;
     case DAD_SP: cpu->f.cy = ((uint32_t)get_hl(cpu) + cpu->sp > 0xffff); set_hl(cpu, get_hl(cpu) + cpu->sp); break;
 
+    case DAA: cpu_daa(cpu); break;
+
     // Logical group
 
     // Branch group

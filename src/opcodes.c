@@ -32,3 +32,13 @@ void cpu_dcr(CPU *cpu, uint8_t * const rm) {
     --(*rm);
     update_zsp_flags(cpu, *rm);
 }
+
+void cpu_daa(CPU *cpu) {
+    uint8_t to_add = 0;
+    if((cpu->a & 0x0f) > 9 || cpu->f.ac) to_add += 0x06;
+    if((cpu->a >> 4) > 9 || cpu->f.cy) to_add += 0x60;
+    update_ac_flag_add(cpu, cpu->a, to_add, false);
+    update_cy_flag_add(cpu, cpu->a, to_add, false);
+    cpu->a += to_add;
+    update_zsp_flags(cpu, cpu->a);
+}
