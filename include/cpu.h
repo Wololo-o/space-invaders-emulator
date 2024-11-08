@@ -41,6 +41,8 @@ void cpu_tick(CPU *cpu);
 void clear_flags(CPU *cpu);
 uint8_t next_byte(CPU *cpu);
 uint16_t next_word(CPU *cpu);
+void push(CPU *cpu, uint16_t value);
+uint16_t pop(CPU *cpu);
 
 // Memory read/write helper functions
 uint8_t read_byte(CPU *cpu, uint16_t address);

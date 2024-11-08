@@ -286,4 +286,6 @@ void cpu_rrc(CPU *cpu);
 void cpu_ral(CPU *cpu);
 void cpu_rar(CPU *cpu);
 
+void cpu_call(CPU *cpu, bool condition);
+
 #endif // OPCODES_H

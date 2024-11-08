@@ -287,6 +287,22 @@ void cpu_tick(CPU *cpu) {
     case JP: if(!cpu->f.s) cpu->pc = next_word(cpu); break;
     case JM: if(cpu->f.s) cpu->pc = next_word(cpu); break;
 
+    case CALL:
+    case CALL_ALT_1:
+    case CALL_ALT_2:
+    case CALL_ALT_3:
+        cpu_call(cpu, true);
+        break;
+
+    case CNZ: cpu_call(cpu, !cpu->f.z); break;
+    case CZ: cpu_call(cpu, cpu->f.z); break;
+    case CNC: cpu_call(cpu, !cpu->f.cy); break;
+    case CC: cpu_call(cpu, cpu->f.cy); break;
+    case CPO: cpu_call(cpu, !cpu->f.p); break;
+    case CPE: cpu_call(cpu, cpu->f.p); break;
+    case CP: cpu_call(cpu, !cpu->f.s); break;
+    case CM: cpu_call(cpu, cpu->f.s); break;
+
     // Stack, I/O and machine control group
     case NOP:
     case NOP_ALT_1:
@@ -314,6 +330,16 @@ uint8_t next_byte(CPU *cpu) {
 uint16_t next_word(CPU *cpu) {
     cpu->pc += 2;
     return read_word(cpu, cpu->pc - 2);
+}
+
+void push(CPU *cpu, uint16_t value) {
+    write_word(cpu, cpu->sp - 2, value);
+    cpu->sp -= 2;
+}
+
+uint16_t pop(CPU *cpu) {
+    cpu->sp += 2;
+    return read_word(cpu, cpu->sp -2);
 }
 
 uint8_t read_byte(CPU *cpu, uint16_t address) {

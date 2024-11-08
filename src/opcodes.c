@@ -118,3 +118,10 @@ void cpu_rar(CPU *cpu) {
     cpu->a |= (cpu->f.cy << 7);
     cpu->f.cy = low_order_bit;
 }
+
+void cpu_call(CPU *cpu, bool condition) {
+    if(condition) {
+        push(cpu, cpu->pc);
+        cpu->pc = next_word(cpu);
+    }
+}
