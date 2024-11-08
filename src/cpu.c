@@ -317,14 +317,17 @@ void cpu_tick(CPU *cpu) {
     case RP: if(!cpu->f.s) cpu->pc = pop(cpu); break;
     case RM: if(cpu->f.s) cpu->pc = pop(cpu); break;
 
-    case RST_0: cpu_rst(cpu, 0); break;
-    case RST_1: cpu_rst(cpu, 1); break;
-    case RST_2: cpu_rst(cpu, 2); break;
-    case RST_3: cpu_rst(cpu, 3); break;
-    case RST_4: cpu_rst(cpu, 4); break;
-    case RST_5: cpu_rst(cpu, 5); break;
-    case RST_6: cpu_rst(cpu, 6); break;
-    case RST_7: cpu_rst(cpu, 7); break;
+    case RST_0:
+    case RST_1:
+    case RST_2:
+    case RST_3:
+    case RST_4:
+    case RST_5:
+    case RST_6:
+    case RST_7:
+        push(cpu, cpu->pc);
+        cpu->pc = (opcode >> 3) & 7;
+        break;
 
     // Stack, I/O and machine control group
     case NOP:

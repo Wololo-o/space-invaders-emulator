@@ -125,8 +125,3 @@ void cpu_call(CPU *cpu, bool condition) {
         cpu->pc = next_word(cpu);
     }
 }
-
-void cpu_rst(CPU *cpu, uint8_t code) {
-    push(cpu, cpu->pc);
-    cpu->pc = 8 * code;
-}
