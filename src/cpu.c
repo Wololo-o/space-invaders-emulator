@@ -303,6 +303,20 @@ void cpu_tick(CPU *cpu) {
     case CP: cpu_call(cpu, !cpu->f.s); break;
     case CM: cpu_call(cpu, cpu->f.s); break;
 
+    case RET:
+    case RET_ALT:
+        cpu->pc = pop(cpu);
+        break;
+
+    case RNZ: if(!cpu->f.z) cpu->pc = pop(cpu); break;
+    case RZ: if(cpu->f.z) cpu->pc = pop(cpu); break;
+    case RNC: if(!cpu->f.cy) cpu->pc = pop(cpu); break;
+    case RC: if(cpu->f.cy) cpu->pc = pop(cpu); break;
+    case RPO: if(!cpu->f.p) cpu->pc = pop(cpu); break;
+    case RPE: if(cpu->f.p) cpu->pc = pop(cpu); break;
+    case RP: if(!cpu->f.s) cpu->pc = pop(cpu); break;
+    case RM: if(cpu->f.s) cpu->pc = pop(cpu); break;
+
     // Stack, I/O and machine control group
     case NOP:
     case NOP_ALT_1:
