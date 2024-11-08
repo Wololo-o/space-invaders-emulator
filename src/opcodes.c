@@ -84,3 +84,11 @@ void cpu_ori(CPU *cpu) {
     cpu->f.cy = 0;
     cpu->f.ac = 0;
 }
+
+void cpu_cmp(CPU *cpu, uint8_t * const rm) {
+    update_flags_cmp(cpu, *rm);
+}
+
+void cpu_cpi(CPU *cpu) {
+    update_flags_cmp(cpu, next_byte(cpu));
+}

@@ -62,5 +62,7 @@ void update_cy_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry);
 void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow);
 void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry);
 void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow);
+void update_flags_cmp(CPU *cpu, uint8_t val);
+uint8_t parity(uint8_t val);
 
 #endif // CPU_H

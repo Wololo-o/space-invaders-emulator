@@ -278,5 +278,7 @@ void cpu_xra(CPU *cpu, uint8_t * const rm);
 void cpu_xri(CPU *cpu);
 void cpu_ora(CPU *cpu, uint8_t * const rm);
 void cpu_ori(CPU *cpu);
+void cpu_cpm(CPU *cpu, uint8_t * const rm);
+void cpu_cpi(CPU *cpu);
 
 #endif // OPCODES_H

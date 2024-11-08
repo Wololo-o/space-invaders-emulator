@@ -252,6 +252,17 @@ void cpu_tick(CPU *cpu) {
 
     case ORI: cpu_ori(cpu); break;
 
+    case CMP_B: cpu_cmp(cpu, cpu->b); break;
+    case CMP_C: cpu_cmp(cpu, cpu->c); break;
+    case CMP_D: cpu_cmp(cpu, cpu->d); break;
+    case CMP_E: cpu_cmp(cpu, cpu->e); break;
+    case CMP_H: cpu_cmp(cpu, cpu->h); break;
+    case CMP_L: cpu_cmp(cpu, cpu->l); break;
+    case CMP_M: cpu_cmp(cpu, cpu->memory + get_hl(cpu)); break;
+    case CMP_A: cpu_cmp(cpu, cpu->a); break;
+
+    case CPI: cpu_cpi(cpu); break;
+
     // Branch group
 
     // Stack, I/O and machine control group
@@ -328,16 +339,10 @@ void set_hl(CPU *cpu, uint16_t value) {
 }
 
 void update_zsp_flags(CPU *cpu, uint8_t res) {
-    uint8_t parity = 0;
 
     cpu->f.z = !res;
     cpu->f.s = (res >> 7) & 1;
-
-    while(res) {
-        parity += res & 1;
-        res >>= 1;
-    }
-    cpu->f.p = !(parity % 2);
+    cpu->f.p = parity(res);
 }
 
 void update_cy_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
@@ -362,4 +367,23 @@ void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
     uint8_t borrow = is_borrow ? cpu->f.cy : 0;
     uint8_t res = (val1 & 0x0f) + ((~val2 + 1) & 0x0f) + ((~borrow + 1) & 0x0f);
     cpu->f.ac = ((res & 0x10) >> 4);
+}
+
+void update_flags_cmp(CPU *cpu, uint8_t val) {
+    uint8_t res = cpu->a - val;
+
+    if(cpu->a == val) cpu->f.z = 1;
+    if(cpu->a < val) cpu->f.cy = 1;
+    update_ac_flag_sub(cpu, cpu->a, val, false);
+    cpu->f.s = (res >> 7) & 1;
+    cpu->f.p = parity(cpu->a - val);
+}
+
+uint8_t parity(uint8_t val) {
+    uint8_t parity = 0;
+    while(val) {
+        parity += val & 1;
+        val >>= 1;
+    }
+    return !(parity % 2);
 }
