@@ -104,3 +104,17 @@ void cpu_rrc(CPU *cpu) {
     cpu->a >>= 1;
     cpu->a |= (cpu->f.cy << 7);
 }
+
+void cpu_ral(CPU *cpu) {
+    uint8_t high_order_bit = cpu->a >> 7;
+    cpu->a <<= 1;
+    cpu->a |= cpu->f.cy;
+    cpu->f.cy = high_order_bit;
+}
+
+void cpu_rar(CPU *cpu) {
+    uint8_t low_order_bit = cpu->a & 1;
+    cpu->a >>= 1;
+    cpu->a |= (cpu->f.cy << 7);
+    cpu->f.cy = low_order_bit;
+}

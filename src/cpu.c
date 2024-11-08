@@ -265,6 +265,8 @@ void cpu_tick(CPU *cpu) {
 
     case RLC: cpu_rlc(cpu); break;
     case RRC: cpu_rrc(cpu); break;
+    case RAL: cpu_ral(cpu); break;
+    case RAR: cpu_rar(cpu); break;
 
     // Branch group
 

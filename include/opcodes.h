@@ -283,5 +283,7 @@ void cpu_cpi(CPU *cpu);
 
 void cpu_rlc(CPU *cpu);
 void cpu_rrc(CPU *cpu);
+void cpu_ral(CPU *cpu);
+void cpu_rar(CPU *cpu);
 
 #endif // OPCODES_H

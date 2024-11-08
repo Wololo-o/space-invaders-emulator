@@ -171,6 +171,20 @@ int main(int argc, char const *argv[]) {
     assert(cpu.f.cy);
     assert(cpu.a == 0xdd); // 0b11011101
 
+    // ral
+    cpu.a = 0xbb; //0b10111011
+    cpu.f.cy = 0;
+    cpu_ral(&cpu);
+    assert(cpu.f.cy);
+    assert(cpu.a == 0x76); // 0b01110110
+
+    // rar
+    cpu.a = 0xba; //0b10111010
+    cpu.f.cy = 0;
+    cpu_rar(&cpu);
+    assert(!cpu.f.cy);
+    assert(cpu.a == 0x5d); // 0b01011101
+
 
     return 0;
 }
