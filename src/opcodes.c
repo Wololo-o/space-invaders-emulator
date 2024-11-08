@@ -137,3 +137,13 @@ void cpu_push_psw(CPU *cpu) {
     to_push |= 2;
     push(cpu, to_push);
 }
+
+void cpu_pop_psw(CPU *cpu) {
+    uint16_t psw = pop(cpu);
+    cpu->a = psw >> 8;
+    cpu->f.cy = psw & 1;
+    cpu->f.p = (psw & 4) >> 2;
+    cpu->f.ac = (psw & 16) >> 4;
+    cpu->f.z = (psw & 64) >> 6;
+    cpu->f.s = (psw & 128) >> 7;
+}

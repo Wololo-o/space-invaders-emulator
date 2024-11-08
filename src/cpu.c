@@ -336,6 +336,11 @@ void cpu_tick(CPU *cpu) {
     case PUSH_D: push(cpu, get_de(cpu)); break;
     case PUSH_H: push(cpu, get_hl(cpu)); break;
     case PUSH_PSW: cpu_push_psw(cpu); break;
+    
+    case POP_B: set_bc(cpu, pop(cpu)); break;
+    case POP_D: set_de(cpu, pop(cpu)); break;
+    case POP_H: set_hl(cpu, pop(cpu)); break;
+    case POP_PSW: cpu_pop_psw(cpu); break;
 
     case NOP:
     case NOP_ALT_1:
