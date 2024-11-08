@@ -240,6 +240,17 @@ void cpu_tick(CPU *cpu) {
     case XRA_A: cpu_xra(cpu, &cpu->a); break;
 
     case XRI: cpu_xri(cpu); break;
+    
+    case ORA_B: cpu_ora(cpu, &cpu->b); break;
+    case ORA_C: cpu_ora(cpu, &cpu->c); break;
+    case ORA_D: cpu_ora(cpu, &cpu->d); break;
+    case ORA_E: cpu_ora(cpu, &cpu->e); break;
+    case ORA_H: cpu_ora(cpu, &cpu->h); break;
+    case ORA_L: cpu_ora(cpu, &cpu->l); break;
+    case ORA_M: cpu_ora(cpu, cpu->memory + get_hl(cpu)); break;
+    case ORA_A: cpu_ora(cpu, &cpu->a); break;
+
+    case ORI: cpu_ori(cpu); break;
 
     // Branch group
 

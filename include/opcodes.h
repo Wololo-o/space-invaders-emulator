@@ -276,5 +276,7 @@ void cpu_ana(CPU *cpu, uint8_t * const rm);
 void cpu_ani(CPU *cpu);
 void cpu_xra(CPU *cpu, uint8_t * const rm);
 void cpu_xri(CPU *cpu);
+void cpu_ora(CPU *cpu, uint8_t * const rm);
+void cpu_ori(CPU *cpu);
 
 #endif // OPCODES_H
