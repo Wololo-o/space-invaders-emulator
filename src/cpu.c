@@ -342,6 +342,10 @@ void cpu_tick(CPU *cpu) {
     case POP_H: set_hl(cpu, pop(cpu)); break;
     case POP_PSW: cpu_pop_psw(cpu); break;
 
+    case XTHL: cpu_xthl(cpu); break;
+
+    case SPHL: cpu->sp = get_hl(cpu); break;
+
     case NOP:
     case NOP_ALT_1:
     case NOP_ALT_2:

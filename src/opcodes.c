@@ -147,3 +147,9 @@ void cpu_pop_psw(CPU *cpu) {
     cpu->f.z = (psw & 64) >> 6;
     cpu->f.s = (psw & 128) >> 7;
 }
+
+void cpu_xthl(CPU *cpu) {
+    uint16_t tmp = read_word(cpu, cpu->sp);
+    write_word(cpu, cpu->sp, get_hl(cpu));
+    set_hl(cpu, tmp);
+}

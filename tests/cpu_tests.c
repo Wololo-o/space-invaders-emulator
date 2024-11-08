@@ -209,6 +209,13 @@ int main(int argc, char const *argv[]) {
     assert(cpu.a == 0x27);
     assert(cpu.f.ac & cpu.f.cy & cpu.f.p & cpu.f.s & cpu.f.z);
 
+    // xthl
+    set_hl(&cpu, 0x9427);
+    push(&cpu, 0xd0d0);
+    cpu_xthl(&cpu);
+    assert(get_hl(&cpu) == 0xd0d0);
+    assert(read_word(&cpu, cpu.sp) == 0x9427);
+
 
     return 0;
 }
