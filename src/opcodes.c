@@ -125,3 +125,15 @@ void cpu_call(CPU *cpu, bool condition) {
         cpu->pc = next_word(cpu);
     }
 }
+
+void cpu_push_psw(CPU *cpu) {
+    uint16_t to_push = 0;
+    to_push |= (cpu->a << 8);
+    to_push |= cpu->f.cy;
+    to_push |= (cpu->f.p << 2);
+    to_push |= (cpu->f.ac << 4);
+    to_push |= (cpu->f.z << 6);
+    to_push |= (cpu->f.s << 7);
+    to_push |= 2;
+    push(cpu, to_push);
+}

@@ -332,6 +332,11 @@ void cpu_tick(CPU *cpu) {
     case PCHL: cpu->pc = get_hl(cpu); break;
 
     // Stack, I/O and machine control group
+    case PUSH_B: push(cpu, get_bc(cpu)); break;
+    case PUSH_D: push(cpu, get_de(cpu)); break;
+    case PUSH_H: push(cpu, get_hl(cpu)); break;
+    case PUSH_PSW: cpu_push_psw(cpu); break;
+
     case NOP:
     case NOP_ALT_1:
     case NOP_ALT_2:

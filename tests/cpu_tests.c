@@ -184,6 +184,18 @@ int main(int argc, char const *argv[]) {
     cpu_rar(&cpu);
     assert(!cpu.f.cy);
     assert(cpu.a == 0x5d); // 0b01011101
+    
+    // push psw 1
+    cpu.f.ac = cpu.f.cy = cpu.f.p = cpu.f.s = cpu.f.z = 0;
+    cpu.a = 0x27;
+    cpu_push_psw(&cpu);
+    assert(read_word(&cpu, cpu.sp) == 0x2702);
+    
+    // push psw 2
+    cpu.f.ac = cpu.f.cy = cpu.f.p = cpu.f.s = cpu.f.z = 1;
+    cpu.a = 0x27;
+    cpu_push_psw(&cpu);
+    assert(read_word(&cpu, cpu.sp) == 0x27d7);
 
 
     return 0;

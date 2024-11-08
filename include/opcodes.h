@@ -288,4 +288,6 @@ void cpu_rar(CPU *cpu);
 
 void cpu_call(CPU *cpu, bool condition);
 
+void cpu_push_psw(CPU *cpu);
+
 #endif // OPCODES_H
