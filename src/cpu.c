@@ -271,6 +271,8 @@ void cpu_tick(CPU *cpu) {
     case CMA: cpu->a = ~cpu->a; break;
     case CMC: cpu->f.cy = !cpu->f.cy; break;
 
+    case STC: cpu->f.cy = 1; break;
+
     // Branch group
 
     // Stack, I/O and machine control group
