@@ -274,6 +274,18 @@ void cpu_tick(CPU *cpu) {
     case STC: cpu->f.cy = 1; break;
 
     // Branch group
+    case JMP:
+    case JMP_ALT:
+        cpu->pc = next_word(cpu); break;
+    
+    case JNZ: if(!cpu->f.z) cpu->pc = next_word(cpu); break;
+    case JZ: if(cpu->f.z) cpu->pc = next_word(cpu); break;
+    case JNC: if(!cpu->f.cy) cpu->pc = next_word(cpu); break;
+    case JC: if(cpu->f.cy) cpu->pc = next_word(cpu); break;
+    case JPO: if(!cpu->f.p) cpu->pc = next_word(cpu); break;
+    case JPE: if(cpu->f.p) cpu->pc = next_word(cpu); break;
+    case JP: if(!cpu->f.s) cpu->pc = next_word(cpu); break;
+    case JM: if(cpu->f.s) cpu->pc = next_word(cpu); break;
 
     // Stack, I/O and machine control group
     case NOP:
