@@ -252,14 +252,14 @@ void cpu_tick(CPU *cpu) {
 
     case ORI: cpu_ori(cpu); break;
 
-    case CMP_B: cpu_cmp(cpu, cpu->b); break;
-    case CMP_C: cpu_cmp(cpu, cpu->c); break;
-    case CMP_D: cpu_cmp(cpu, cpu->d); break;
-    case CMP_E: cpu_cmp(cpu, cpu->e); break;
-    case CMP_H: cpu_cmp(cpu, cpu->h); break;
-    case CMP_L: cpu_cmp(cpu, cpu->l); break;
+    case CMP_B: cpu_cmp(cpu, &cpu->b); break;
+    case CMP_C: cpu_cmp(cpu, &cpu->c); break;
+    case CMP_D: cpu_cmp(cpu, &cpu->d); break;
+    case CMP_E: cpu_cmp(cpu, &cpu->e); break;
+    case CMP_H: cpu_cmp(cpu, &cpu->h); break;
+    case CMP_L: cpu_cmp(cpu, &cpu->l); break;
     case CMP_M: cpu_cmp(cpu, cpu->memory + get_hl(cpu)); break;
-    case CMP_A: cpu_cmp(cpu, cpu->a); break;
+    case CMP_A: cpu_cmp(cpu, &cpu->a); break;
 
     case CPI: cpu_cpi(cpu); break;
 
