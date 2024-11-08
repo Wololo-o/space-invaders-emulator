@@ -329,6 +329,8 @@ void cpu_tick(CPU *cpu) {
         cpu->pc = (opcode >> 3) & 7;
         break;
 
+    case PCHL: cpu->pc = get_hl(cpu); break;
+
     // Stack, I/O and machine control group
     case NOP:
     case NOP_ALT_1:
