@@ -268,6 +268,9 @@ void cpu_tick(CPU *cpu) {
     case RAL: cpu_ral(cpu); break;
     case RAR: cpu_rar(cpu); break;
 
+    case CMA: cpu->a = ~cpu->a; break;
+    case CMC: cpu->f.cy = !cpu->f.cy; break;
+
     // Branch group
 
     // Stack, I/O and machine control group
