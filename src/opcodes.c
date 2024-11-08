@@ -92,3 +92,15 @@ void cpu_cmp(CPU *cpu, uint8_t * const rm) {
 void cpu_cpi(CPU *cpu) {
     update_flags_cmp(cpu, next_byte(cpu));
 }
+
+void cpu_rlc(CPU *cpu) {
+    cpu->f.cy = (cpu->a >> 7);
+    cpu->a <<= 1;
+    cpu->a |= cpu->f.cy;
+}
+
+void cpu_rrc(CPU *cpu) {
+    cpu->f.cy = (cpu->a & 1);
+    cpu->a >>= 1;
+    cpu->a |= (cpu->f.cy << 7);
+}

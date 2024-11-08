@@ -281,4 +281,7 @@ void cpu_ori(CPU *cpu);
 void cpu_cpm(CPU *cpu, uint8_t * const rm);
 void cpu_cpi(CPU *cpu);
 
+void cpu_rlc(CPU *cpu);
+void cpu_rrc(CPU *cpu);
+
 #endif // OPCODES_H

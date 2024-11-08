@@ -159,6 +159,18 @@ int main(int argc, char const *argv[]) {
     cpu_dcr(&cpu, cpu.memory + 0x1000);
     assert(cpu.f.ac);
 
+    // rlc
+    cpu.a = 0xbb; // 0b10111011
+    cpu_rlc(&cpu);
+    assert(cpu.f.cy);
+    assert(cpu.a == 0x77); // 0b01110111
+
+    // rrc
+    cpu.a = 0xbb; // 0b10111011
+    cpu_rrc(&cpu);
+    assert(cpu.f.cy);
+    assert(cpu.a == 0xdd); // 0b11011101
+
 
     return 0;
 }

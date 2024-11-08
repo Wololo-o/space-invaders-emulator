@@ -263,6 +263,9 @@ void cpu_tick(CPU *cpu) {
 
     case CPI: cpu_cpi(cpu); break;
 
+    case RLC: cpu_rlc(cpu); break;
+    case RRC: cpu_rrc(cpu); break;
+
     // Branch group
 
     // Stack, I/O and machine control group
