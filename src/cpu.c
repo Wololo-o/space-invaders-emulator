@@ -15,6 +15,9 @@ void cpu_init(CPU *cpu) {
     for(int i = 0; i <= MEM_SIZE; ++i) {
         cpu->memory[i] = 0;
     }
+
+    cpu->hlt = cpu->interrupts_enabled = false;
+    cpu->enabling_interrputs_timer = 0;
 }
 
 bool cpu_load_rom_at(CPU *cpu, char const *filename, uint16_t start) {
@@ -346,6 +349,11 @@ void cpu_tick(CPU *cpu) {
 
     case SPHL: cpu->sp = get_hl(cpu); break;
 
+    case EI: cpu->enabling_interrputs_timer = 2; break;
+    case DI: cpu->interrupts_enabled = false; break;
+
+    case HLT: cpu->hlt = true;
+
     case NOP:
     case NOP_ALT_1:
     case NOP_ALT_2:
@@ -359,6 +367,8 @@ void cpu_tick(CPU *cpu) {
     default:
         break;
     }
+
+    if(cpu->enabling_interrputs_timer > 0) cpu->interrupts_enabled = !(--cpu->enabling_interrputs_timer);
 }
 
 void clear_flags(CPU *cpu) {

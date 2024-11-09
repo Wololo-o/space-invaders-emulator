@@ -31,6 +31,10 @@ typedef struct CPU {
 
     uint8_t memory[MEM_SIZE];
 
+    bool hlt;
+    bool interrupts_enabled;
+    uint8_t enabling_interrputs_timer;
+
     bool exit;
 } CPU;
 
