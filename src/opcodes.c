@@ -8,16 +8,18 @@ void cpu_xchg(CPU *cpu) {
 }
 
 void cpu_add(CPU *cpu, uint8_t value, bool is_carry) {
+    bool carry_val = is_carry & cpu->f.cy;
     update_ac_flag_add(cpu, cpu->a, value, is_carry);
     update_cy_flag_add(cpu, cpu->a, value, is_carry);
-    cpu->a += value + (is_carry ? 1 : 0);
+    cpu->a += value + (carry_val ? 1 : 0);
     update_zsp_flags(cpu, cpu->a);
 }
 
 void cpu_sub(CPU *cpu, uint8_t value, bool is_borrow) {
+    bool borrow_val = is_borrow & cpu->f.cy;
     update_ac_flag_sub(cpu, cpu->a, value, is_borrow);
     update_cy_flag_sub(cpu, cpu->a, value, is_borrow);
-    cpu->a -= value + (is_borrow ? 1 : 0);
+    cpu->a -= value + (borrow_val ? 1 : 0);
     update_zsp_flags(cpu, cpu->a);
 }
 
@@ -36,7 +38,7 @@ void cpu_dcr(CPU *cpu, uint8_t * const rm) {
 void cpu_daa(CPU *cpu) {
     uint8_t to_add = 0;
     if((cpu->a & 0x0f) > 9 || cpu->f.ac) to_add += 0x06;
-    if((cpu->a >> 4) > 9 || cpu->f.cy) to_add += 0x60;
+    if(((cpu->a + to_add) >> 4) > 9 || cpu->f.cy) to_add += 0x60;
     update_ac_flag_add(cpu, cpu->a, to_add, false);
     update_cy_flag_add(cpu, cpu->a, to_add, false);
     cpu->a += to_add;
@@ -121,8 +123,10 @@ void cpu_rar(CPU *cpu) {
 
 void cpu_call(CPU *cpu, bool condition) {
     if(condition) {
-        push(cpu, cpu->pc);
+        push(cpu, cpu->pc + 2);
         cpu->pc = next_word(cpu);
+    } else {
+        cpu->pc += 2;
     }
 }
 

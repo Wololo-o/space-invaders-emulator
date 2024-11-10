@@ -98,12 +98,12 @@ void cpu_tick(CPU *cpu) {
     case MOV_L_A: cpu->l = cpu->a; break;
 
     case MOV_M_B: cpu->memory[get_hl(cpu)] = cpu->b; break;
-    case MOV_M_C: cpu->memory[get_hl(cpu)] = cpu->b; break;
-    case MOV_M_D: cpu->memory[get_hl(cpu)] = cpu->b; break;
-    case MOV_M_E: cpu->memory[get_hl(cpu)] = cpu->b; break;
-    case MOV_M_H: cpu->memory[get_hl(cpu)] = cpu->b; break;
-    case MOV_M_L: cpu->memory[get_hl(cpu)] = cpu->b; break;
-    case MOV_M_A: cpu->memory[get_hl(cpu)] = cpu->b; break;
+    case MOV_M_C: cpu->memory[get_hl(cpu)] = cpu->c; break;
+    case MOV_M_D: cpu->memory[get_hl(cpu)] = cpu->d; break;
+    case MOV_M_E: cpu->memory[get_hl(cpu)] = cpu->e; break;
+    case MOV_M_H: cpu->memory[get_hl(cpu)] = cpu->h; break;
+    case MOV_M_L: cpu->memory[get_hl(cpu)] = cpu->l; break;
+    case MOV_M_A: cpu->memory[get_hl(cpu)] = cpu->a; break;
 
     case MOV_A_B: cpu->a = cpu->b; break;
     case MOV_A_C: cpu->a = cpu->c; break;
@@ -281,14 +281,14 @@ void cpu_tick(CPU *cpu) {
     case JMP_ALT:
         cpu->pc = next_word(cpu); break;
     
-    case JNZ: if(!cpu->f.z) cpu->pc = next_word(cpu); break;
-    case JZ: if(cpu->f.z) cpu->pc = next_word(cpu); break;
-    case JNC: if(!cpu->f.cy) cpu->pc = next_word(cpu); break;
-    case JC: if(cpu->f.cy) cpu->pc = next_word(cpu); break;
-    case JPO: if(!cpu->f.p) cpu->pc = next_word(cpu); break;
-    case JPE: if(cpu->f.p) cpu->pc = next_word(cpu); break;
-    case JP: if(!cpu->f.s) cpu->pc = next_word(cpu); break;
-    case JM: if(cpu->f.s) cpu->pc = next_word(cpu); break;
+    case JNZ: if(!cpu->f.z) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JZ: if(cpu->f.z) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JNC: if(!cpu->f.cy) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JC: if(cpu->f.cy) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JPO: if(!cpu->f.p) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JPE: if(cpu->f.p) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JP: if(!cpu->f.s) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JM: if(cpu->f.s) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
 
     case CALL:
     case CALL_ALT_1:
@@ -348,6 +348,9 @@ void cpu_tick(CPU *cpu) {
     case XTHL: cpu_xthl(cpu); break;
 
     case SPHL: cpu->sp = get_hl(cpu); break;
+
+    case IN: cpu->a = cpu->in_ports[next_byte(cpu)](); break;
+    case OUT: cpu->out_ports[next_byte(cpu)](cpu->a); break;
 
     case EI: cpu->enabling_interrputs_timer = 2; break;
     case DI: cpu->interrupts_enabled = false; break;
@@ -470,13 +473,9 @@ void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
 }
 
 void update_flags_cmp(CPU *cpu, uint8_t val) {
-    uint8_t res = cpu->a - val;
-
-    if(cpu->a == val) cpu->f.z = 1;
-    if(cpu->a < val) cpu->f.cy = 1;
+    update_zsp_flags(cpu, cpu->a - val);
     update_ac_flag_sub(cpu, cpu->a, val, false);
-    cpu->f.s = (res >> 7) & 1;
-    cpu->f.p = parity(cpu->a - val);
+    update_cy_flag_sub(cpu, cpu->a, val, false);
 }
 
 uint8_t parity(uint8_t val) {

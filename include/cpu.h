@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #define MEM_SIZE 0x10000
+#define NUM_PORTS 0xff
 
 typedef struct flags {
     uint8_t z:1;
@@ -30,6 +31,9 @@ typedef struct CPU {
     uint16_t pc;
 
     uint8_t memory[MEM_SIZE];
+
+    uint8_t (*in_ports[NUM_PORTS])(void);
+    void (*out_ports[NUM_PORTS])(uint8_t data);
 
     bool hlt;
     bool interrupts_enabled;
