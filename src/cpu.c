@@ -156,10 +156,10 @@ void cpu_tick(CPU *cpu) {
     case SHLD: write_word(cpu, next_word(cpu), get_hl(cpu)); break;
     case LHLD: set_hl(cpu, read_word(cpu, next_word(cpu))); break;
 
-    case LDAX_B: cpu->a = read_word(cpu, get_bc(cpu)); break;
-    case LDAX_D: cpu->a = read_word(cpu, get_de(cpu)); break;
-    case STAX_B: write_word(cpu, get_bc(cpu), cpu->a); break;
-    case STAX_D: write_word(cpu, get_bc(cpu), cpu->a); break;
+    case LDAX_B: cpu->a = read_byte(cpu, get_bc(cpu)); break;
+    case LDAX_D: cpu->a = read_byte(cpu, get_de(cpu)); break;
+    case STAX_B: write_byte(cpu, get_bc(cpu), cpu->a); break;
+    case STAX_D: write_byte(cpu, get_de(cpu), cpu->a); break;
 
     case XCHG: cpu_xchg(cpu); break;
 
