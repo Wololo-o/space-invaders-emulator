@@ -3,6 +3,25 @@
 #include "cpu.h"
 #include "opcodes.h"
 
+const uint8_t operation_cycle[256] = {
+    4, 10, 7,  5,  5,  5,  7,  4,  4,  10, 7,  5,  5,  5,  7, 4,
+    4, 10, 7,  5,  5,  5,  7,  4,  4,  10, 7,  5,  5,  5,  7, 4,
+    4, 10, 16, 5,  5,  5,  7,  4,  4,  10, 16, 5,  5,  5,  7, 4,
+    4, 10, 13, 5,  10, 10, 10, 4,  4,  10, 13, 5,  5,  5,  7, 4,
+    5, 5,  5,  5,  5,  5,  7,  5,  5,  5,  5,  5,  5,  5,  7, 5,
+    5, 5,  5,  5,  5,  5,  7,  5,  5,  5,  5,  5,  5,  5,  7, 5,
+    5, 5,  5,  5,  5,  5,  7,  5,  5,  5,  5,  5,  5,  5,  7, 5,
+    7, 7,  7,  7,  7,  7,  7,  7,  5,  5,  5,  5,  5,  5,  7, 5,
+    4, 4,  4,  4,  4,  4,  7,  4,  4,  4,  4,  4,  4,  4,  7, 4,
+    4, 4,  4,  4,  4,  4,  7,  4,  4,  4,  4,  4,  4,  4,  7, 4,
+    4, 4,  4,  4,  4,  4,  7,  4,  4,  4,  4,  4,  4,  4,  7, 4,
+    4, 4,  4,  4,  4,  4,  7,  4,  4,  4,  4,  4,  4,  4,  7, 4,
+    5, 10, 10, 10, 11, 11, 7,  11, 5,  10, 10, 10, 11, 17, 7, 11,
+    5, 10, 10, 10, 11, 11, 7,  11, 5,  10, 10, 10, 11, 17, 7, 11,
+    5, 10, 10, 18, 11, 11, 7,  11, 5,  5,  10, 4,  11, 17, 7, 11,
+    5, 10, 10, 4,  11, 11, 7,  11, 5,  5,  10, 4,  11, 17, 7, 11
+};
+
 void cpu_init(CPU *cpu) {
     cpu->exit = false;
 
@@ -18,6 +37,7 @@ void cpu_init(CPU *cpu) {
 
     cpu->hlt = cpu->interrupts_enabled = false;
     cpu->enabling_interrputs_timer = 0;
+    cpu->cycle_count = 0;
 }
 
 bool cpu_load_rom_at(CPU *cpu, char const *filename, uint16_t start) {
@@ -39,6 +59,8 @@ bool cpu_load_rom_at(CPU *cpu, char const *filename, uint16_t start) {
 
 void cpu_tick(CPU *cpu) {
     uint8_t opcode = cpu->memory[cpu->pc++];
+
+    cpu->cycle_count += operation_cycle[opcode];
 
     switch(opcode) {
 
