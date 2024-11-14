@@ -288,6 +288,7 @@ void cpu_rar(CPU *cpu);
 
 void cpu_call(CPU *cpu);
 void cpu_call_condition(CPU *cpu, bool condition);
+void cpu_ret_condition(CPU *cpu, bool condition);
 
 void cpu_push_psw(CPU *cpu);
 void cpu_pop_psw(CPU *cpu);

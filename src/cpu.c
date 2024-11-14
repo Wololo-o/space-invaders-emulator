@@ -333,14 +333,14 @@ void cpu_tick(CPU *cpu) {
         cpu->pc = pop(cpu);
         break;
 
-    case RNZ: if(!get_flag(cpu, Z)) cpu->pc = pop(cpu); break;
-    case RZ: if(get_flag(cpu, Z)) cpu->pc = pop(cpu); break;
-    case RNC: if(!get_flag(cpu, CY)) cpu->pc = pop(cpu); break;
-    case RC: if(get_flag(cpu, CY)) cpu->pc = pop(cpu); break;
-    case RPO: if(!get_flag(cpu, P)) cpu->pc = pop(cpu); break;
-    case RPE: if(get_flag(cpu, P)) cpu->pc = pop(cpu); break;
-    case RP: if(!get_flag(cpu, S)) cpu->pc = pop(cpu); break;
-    case RM: if(get_flag(cpu, S)) cpu->pc = pop(cpu); break;
+    case RNZ: cpu_ret_condition(cpu, !get_flag(cpu, Z)); break;
+    case RZ: cpu_ret_condition(cpu, get_flag(cpu, Z)); break;
+    case RNC: cpu_ret_condition(cpu, !get_flag(cpu, CY)); break;
+    case RC: cpu_ret_condition(cpu, get_flag(cpu, CY)); break;
+    case RPO: cpu_ret_condition(cpu, !get_flag(cpu, P)); break;
+    case RPE: cpu_ret_condition(cpu, get_flag(cpu, P)); break;
+    case RP: cpu_ret_condition(cpu, !get_flag(cpu, S)); break;
+    case RM: cpu_ret_condition(cpu, get_flag(cpu, S)); break;
 
     case RST_0:
     case RST_1:

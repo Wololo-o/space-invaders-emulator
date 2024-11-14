@@ -136,6 +136,13 @@ void cpu_call_condition(CPU *cpu, bool condition) {
     }
 }
 
+void cpu_ret_condition(CPU *cpu, bool condition) {
+    if(condition) {
+        cpu->pc = pop(cpu);
+        cpu->cycle_count += 6;
+    }
+}
+
 void cpu_push_psw(CPU *cpu) {
     uint16_t to_push = 0;
     to_push |= (cpu->a << 8);
