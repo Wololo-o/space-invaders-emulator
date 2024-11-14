@@ -46,17 +46,18 @@ void cpu_daa(CPU *cpu) {
 }
 
 void cpu_ana(CPU *cpu, uint8_t * const rm) {
+    set_flag(cpu, AC, (cpu->a & 0x08) | (*rm & 0x08));
     cpu->a &= *rm;
     update_zsp_flags(cpu, cpu->a);
     set_flag(cpu, CY, false);
-    set_flag(cpu, AC, false);
 }
 
 void cpu_ani(CPU *cpu) {
-    cpu->a &= next_byte(cpu);
+    uint8_t operand = next_byte(cpu);
+    set_flag(cpu, AC, (cpu->a & 0x08) | (operand & 0x08));
+    cpu->a &= operand;
     update_zsp_flags(cpu, cpu->a);
     set_flag(cpu, CY, false);
-    set_flag(cpu, AC, false);
 }
 
 void cpu_xra(CPU *cpu, uint8_t * const rm) {
@@ -165,11 +166,11 @@ void cpu_push_psw(CPU *cpu) {
 void cpu_pop_psw(CPU *cpu) {
     uint16_t psw = pop(cpu);
     cpu->a = psw >> 8;
-    set_flag(cpu, CY, psw & 0x01);
-    set_flag(cpu, P, (psw & 0x04) >> 2);
-    set_flag(cpu, AC, (psw & 0x10) >> 4);
-    set_flag(cpu, Z, (psw & 0x40) >> 6);
-    set_flag(cpu, S, (psw & 0x80) >> 7);
+    set_flag(cpu, CY, psw & CY);
+    set_flag(cpu, P, (psw & P) >> 2);
+    set_flag(cpu, AC, (psw & AC) >> 4);
+    set_flag(cpu, Z, (psw & Z) >> 6);
+    set_flag(cpu, S, (psw & S) >> 7);
 }
 
 void cpu_xthl(CPU *cpu) {
