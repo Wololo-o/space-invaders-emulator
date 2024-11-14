@@ -6,6 +6,8 @@
 
 #include "disassembler.h"
 
+// #define DEBUG_ON
+
 CPU cpu;
 static bool end = false;
 
@@ -54,15 +56,19 @@ int main(int argc, char const *argv[]) {
 
     cpu.pc = 0x100;
 
-    init_instr_size();
+    #ifdef DEBUG_ON
+        init_instr_size();
+    #endif
 
     while(!end) {
-        // disassemble(&cpu);
-        // cpu_tick(&cpu);
-        // print_cpu_status(&cpu);
-        // getchar();
-
-        cpu_tick(&cpu);
+        #ifdef DEBUG_ON
+            print_cpu_status(&cpu);
+            disassemble(&cpu);
+            cpu_tick(&cpu);
+            getchar();
+        #else
+            cpu_tick(&cpu);
+        #endif
 
     }
 
