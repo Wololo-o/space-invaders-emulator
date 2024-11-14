@@ -482,26 +482,22 @@ void update_zsp_flags(CPU *cpu, uint8_t res) {
 }
 
 void update_cy_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
-    uint8_t carry = is_carry ? get_flag(cpu, CY) : 0;
-    uint16_t res = val1 + val2 + carry;
+    uint16_t res = val1 + val2 + (is_carry & get_flag(cpu, CY));
     set_flag(cpu, CY, (res > 0xff));
 }
 
 void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
-    uint8_t borrow = is_borrow ? get_flag(cpu, CY) : 0;
-    uint16_t res = val1 + (~val2 + 1) + (~borrow + 1);
+    uint16_t res = val1 - val2 - (is_borrow & get_flag(cpu, CY));
     set_flag(cpu, CY, (res > 0xff));
 }
 
 void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
-    uint8_t carry = is_carry ? get_flag(cpu, CY) : 0;
-    uint8_t res = (val1 & 0xf) + (val2 & 0xf) + carry;
+    uint8_t res = (val1 & 0xf) + (val2 & 0xf) + (is_carry & get_flag(cpu, CY));
     set_flag(cpu, AC, ((res & 0x10) >> 4));
 }
 
 void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
-    uint8_t borrow = is_borrow ? get_flag(cpu, CY) : 0;
-    uint8_t res = (val1 & 0x0f) + ((~val2 + 1) & 0x0f) + ((~borrow + 1) & 0x0f);
+    uint8_t res = (val1 & 0x0f) - (val2 & 0x0f) - (is_borrow & get_flag(cpu, CY));
     set_flag(cpu, AC, ((res & 0x10) >> 4));
 }
 
