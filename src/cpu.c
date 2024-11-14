@@ -303,14 +303,14 @@ void cpu_tick(CPU *cpu) {
     case JMP_ALT:
         cpu->pc = next_word(cpu); break;
     
-    case JNZ: if(!get_flag(cpu, Z)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JZ: if(get_flag(cpu, Z)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JNC: if(!get_flag(cpu, CY)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JC: if(get_flag(cpu, CY)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JPO: if(!get_flag(cpu, P)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JPE: if(get_flag(cpu, P)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JP: if(!get_flag(cpu, S)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JM: if(get_flag(cpu, S)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JNZ: cpu_jmp(cpu, !get_flag(cpu, Z)); break;
+    case JZ: cpu_jmp(cpu, get_flag(cpu, Z)); break;
+    case JNC: cpu_jmp(cpu, !get_flag(cpu, CY)); break;
+    case JC: cpu_jmp(cpu, get_flag(cpu, CY)); break;
+    case JPO: cpu_jmp(cpu, !get_flag(cpu, P)); break;
+    case JPE: cpu_jmp(cpu, get_flag(cpu, P)); break;
+    case JP: cpu_jmp(cpu, !get_flag(cpu, S)); break;
+    case JM: cpu_jmp(cpu, get_flag(cpu, S)); break;
 
     case CALL:
     case CALL_ALT_1:

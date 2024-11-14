@@ -121,6 +121,13 @@ void cpu_rar(CPU *cpu) {
     set_flag(cpu, CY, low_order_bit);
 }
 
+void cpu_jmp(CPU *cpu, bool condition) {
+    if(condition)
+        cpu->pc = next_word(cpu);
+    else
+        cpu->pc += 2;
+}
+
 void cpu_call(CPU *cpu) {
     push(cpu, cpu->pc + 2);
     cpu->pc = next_word(cpu);
