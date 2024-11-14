@@ -121,10 +121,16 @@ void cpu_rar(CPU *cpu) {
     set_flag(cpu, CY, low_order_bit);
 }
 
-void cpu_call(CPU *cpu, bool condition) {
+void cpu_call(CPU *cpu) {
+    push(cpu, cpu->pc + 2);
+    cpu->pc = next_word(cpu);
+}
+
+void cpu_call_condition(CPU *cpu, bool condition) {
     if(condition) {
         push(cpu, cpu->pc + 2);
         cpu->pc = next_word(cpu);
+        cpu->cycle_count += 6;
     } else {
         cpu->pc += 2;
     }

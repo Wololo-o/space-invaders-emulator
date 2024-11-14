@@ -316,17 +316,17 @@ void cpu_tick(CPU *cpu) {
     case CALL_ALT_1:
     case CALL_ALT_2:
     case CALL_ALT_3:
-        cpu_call(cpu, true);
+        cpu_call(cpu);
         break;
 
-    case CNZ: cpu_call(cpu, !get_flag(cpu, Z)); break;
-    case CZ: cpu_call(cpu, get_flag(cpu, Z)); break;
-    case CNC: cpu_call(cpu, !get_flag(cpu, CY)); break;
-    case CC: cpu_call(cpu, get_flag(cpu, CY)); break;
-    case CPO: cpu_call(cpu, !get_flag(cpu, P)); break;
-    case CPE: cpu_call(cpu, get_flag(cpu, P)); break;
-    case CP: cpu_call(cpu, !get_flag(cpu, S)); break;
-    case CM: cpu_call(cpu, get_flag(cpu, S)); break;
+    case CNZ: cpu_call_condition(cpu, !get_flag(cpu, Z)); break;
+    case CZ: cpu_call_condition(cpu, get_flag(cpu, Z)); break;
+    case CNC: cpu_call_condition(cpu, !get_flag(cpu, CY)); break;
+    case CC: cpu_call_condition(cpu, get_flag(cpu, CY)); break;
+    case CPO: cpu_call_condition(cpu, !get_flag(cpu, P)); break;
+    case CPE: cpu_call_condition(cpu, get_flag(cpu, P)); break;
+    case CP: cpu_call_condition(cpu, !get_flag(cpu, S)); break;
+    case CM: cpu_call_condition(cpu, get_flag(cpu, S)); break;
 
     case RET:
     case RET_ALT:

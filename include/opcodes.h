@@ -286,7 +286,8 @@ void cpu_rrc(CPU *cpu);
 void cpu_ral(CPU *cpu);
 void cpu_rar(CPU *cpu);
 
-void cpu_call(CPU *cpu, bool condition);
+void cpu_call(CPU *cpu);
+void cpu_call_condition(CPU *cpu, bool condition);
 
 void cpu_push_psw(CPU *cpu);
 void cpu_pop_psw(CPU *cpu);
