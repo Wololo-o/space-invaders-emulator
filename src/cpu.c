@@ -236,10 +236,10 @@ void cpu_tick(CPU *cpu) {
     case DCX_H: set_hl(cpu, get_hl(cpu) - 1); break;
     case DCX_SP: --(cpu->sp); break;
 
-    case DAD_B: cpu->f.cy = ((uint32_t)(get_hl(cpu) + get_bc(cpu)) > 0xffff); set_hl(cpu, get_hl(cpu) + get_bc(cpu)); break;
-    case DAD_D: cpu->f.cy = ((uint32_t)(get_hl(cpu) + get_de(cpu)) > 0xffff); set_hl(cpu, get_hl(cpu) + get_de(cpu)); break;
-    case DAD_H: cpu->f.cy = (get_hl(cpu) >= 0x8000); set_hl(cpu, get_hl(cpu) + get_hl(cpu)); break;
-    case DAD_SP: cpu->f.cy = ((uint32_t)get_hl(cpu) + cpu->sp > 0xffff); set_hl(cpu, get_hl(cpu) + cpu->sp); break;
+    case DAD_B: set_flag(cpu, CY, ((uint32_t)(get_hl(cpu) + get_bc(cpu)) > 0xffff)); set_hl(cpu, get_hl(cpu) + get_bc(cpu)); break;
+    case DAD_D: set_flag(cpu, CY, ((uint32_t)(get_hl(cpu) + get_de(cpu)) > 0xffff)); set_hl(cpu, get_hl(cpu) + get_de(cpu)); break;
+    case DAD_H: set_flag(cpu, CY, (get_hl(cpu) >= 0x8000)) ; set_hl(cpu, get_hl(cpu) + get_hl(cpu)); break;
+    case DAD_SP: set_flag(cpu, CY, ((uint32_t)get_hl(cpu) + cpu->sp > 0xffff)) ; set_hl(cpu, get_hl(cpu) + cpu->sp); break;
 
     case DAA: cpu_daa(cpu); break;
 
@@ -294,23 +294,23 @@ void cpu_tick(CPU *cpu) {
     case RAR: cpu_rar(cpu); break;
 
     case CMA: cpu->a = ~cpu->a; break;
-    case CMC: cpu->f.cy = !cpu->f.cy; break;
+    case CMC: set_flag(cpu, CY, !get_flag(cpu, CY)); break;
 
-    case STC: cpu->f.cy = 1; break;
+    case STC: set_flag(cpu, CY, true); break;
 
     // Branch group
     case JMP:
     case JMP_ALT:
         cpu->pc = next_word(cpu); break;
     
-    case JNZ: if(!cpu->f.z) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JZ: if(cpu->f.z) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JNC: if(!cpu->f.cy) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JC: if(cpu->f.cy) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JPO: if(!cpu->f.p) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JPE: if(cpu->f.p) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JP: if(!cpu->f.s) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
-    case JM: if(cpu->f.s) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JNZ: if(!get_flag(cpu, Z)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JZ: if(get_flag(cpu, Z)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JNC: if(!get_flag(cpu, CY)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JC: if(get_flag(cpu, CY)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JPO: if(!get_flag(cpu, P)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JPE: if(get_flag(cpu, P)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JP: if(!get_flag(cpu, S)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
+    case JM: if(get_flag(cpu, S)) cpu->pc = next_word(cpu); else cpu->pc += 2; break;
 
     case CALL:
     case CALL_ALT_1:
@@ -319,28 +319,28 @@ void cpu_tick(CPU *cpu) {
         cpu_call(cpu, true);
         break;
 
-    case CNZ: cpu_call(cpu, !cpu->f.z); break;
-    case CZ: cpu_call(cpu, cpu->f.z); break;
-    case CNC: cpu_call(cpu, !cpu->f.cy); break;
-    case CC: cpu_call(cpu, cpu->f.cy); break;
-    case CPO: cpu_call(cpu, !cpu->f.p); break;
-    case CPE: cpu_call(cpu, cpu->f.p); break;
-    case CP: cpu_call(cpu, !cpu->f.s); break;
-    case CM: cpu_call(cpu, cpu->f.s); break;
+    case CNZ: cpu_call(cpu, !get_flag(cpu, Z)); break;
+    case CZ: cpu_call(cpu, get_flag(cpu, Z)); break;
+    case CNC: cpu_call(cpu, !get_flag(cpu, CY)); break;
+    case CC: cpu_call(cpu, get_flag(cpu, CY)); break;
+    case CPO: cpu_call(cpu, !get_flag(cpu, P)); break;
+    case CPE: cpu_call(cpu, get_flag(cpu, P)); break;
+    case CP: cpu_call(cpu, !get_flag(cpu, S)); break;
+    case CM: cpu_call(cpu, get_flag(cpu, S)); break;
 
     case RET:
     case RET_ALT:
         cpu->pc = pop(cpu);
         break;
 
-    case RNZ: if(!cpu->f.z) cpu->pc = pop(cpu); break;
-    case RZ: if(cpu->f.z) cpu->pc = pop(cpu); break;
-    case RNC: if(!cpu->f.cy) cpu->pc = pop(cpu); break;
-    case RC: if(cpu->f.cy) cpu->pc = pop(cpu); break;
-    case RPO: if(!cpu->f.p) cpu->pc = pop(cpu); break;
-    case RPE: if(cpu->f.p) cpu->pc = pop(cpu); break;
-    case RP: if(!cpu->f.s) cpu->pc = pop(cpu); break;
-    case RM: if(cpu->f.s) cpu->pc = pop(cpu); break;
+    case RNZ: if(!get_flag(cpu, Z)) cpu->pc = pop(cpu); break;
+    case RZ: if(get_flag(cpu, Z)) cpu->pc = pop(cpu); break;
+    case RNC: if(!get_flag(cpu, CY)) cpu->pc = pop(cpu); break;
+    case RC: if(get_flag(cpu, CY)) cpu->pc = pop(cpu); break;
+    case RPO: if(!get_flag(cpu, P)) cpu->pc = pop(cpu); break;
+    case RPE: if(get_flag(cpu, P)) cpu->pc = pop(cpu); break;
+    case RP: if(!get_flag(cpu, S)) cpu->pc = pop(cpu); break;
+    case RM: if(get_flag(cpu, S)) cpu->pc = pop(cpu); break;
 
     case RST_0:
     case RST_1:
@@ -397,7 +397,7 @@ void cpu_tick(CPU *cpu) {
 }
 
 void clear_flags(CPU *cpu) {
-    cpu->f.ac = cpu->f.cy = cpu->f.p = cpu->f.s = cpu->f.z = 0;
+    cpu->f = 0x02;
 }
 
 uint8_t next_byte(CPU *cpu) {
@@ -463,35 +463,46 @@ void set_hl(CPU *cpu, uint16_t value) {
     cpu->l = value & 0xff;
 }
 
+bool get_flag(CPU const * const cpu, flag_mask flag) {
+    return cpu->f & flag;
+}
+
+void set_flag(CPU *cpu, flag_mask flag, bool set) {
+    if(set)
+        cpu->f |= flag;
+    else
+        cpu->f &= ~flag;
+}
+
 void update_zsp_flags(CPU *cpu, uint8_t res) {
 
-    cpu->f.z = !res;
-    cpu->f.s = (res >> 7) & 1;
-    cpu->f.p = parity(res);
+    set_flag(cpu, Z, !res);
+    set_flag(cpu, S, (res >> 7) & 1);
+    set_flag(cpu, P, parity(res));
 }
 
 void update_cy_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
-    uint8_t carry = is_carry ? cpu->f.cy : 0;
+    uint8_t carry = is_carry ? get_flag(cpu, CY) : 0;
     uint16_t res = val1 + val2 + carry;
-    cpu->f.cy = (res > 0xff);
+    set_flag(cpu, CY, (res > 0xff));
 }
 
 void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
-    uint8_t borrow = is_borrow ? cpu->f.cy : 0;
+    uint8_t borrow = is_borrow ? get_flag(cpu, CY) : 0;
     uint16_t res = val1 + (~val2 + 1) + (~borrow + 1);
-    cpu->f.cy = (res > 0xff);
+    set_flag(cpu, CY, (res > 0xff));
 }
 
 void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
-    uint8_t carry = is_carry ? cpu->f.cy : 0;
+    uint8_t carry = is_carry ? get_flag(cpu, CY) : 0;
     uint8_t res = (val1 & 0xf) + (val2 & 0xf) + carry;
-    cpu->f.ac = ((res & 0x10) >> 4);
+    set_flag(cpu, AC, ((res & 0x10) >> 4));
 }
 
 void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
-    uint8_t borrow = is_borrow ? cpu->f.cy : 0;
+    uint8_t borrow = is_borrow ? get_flag(cpu, CY) : 0;
     uint8_t res = (val1 & 0x0f) + ((~val2 + 1) & 0x0f) + ((~borrow + 1) & 0x0f);
-    cpu->f.ac = ((res & 0x10) >> 4);
+    set_flag(cpu, AC, ((res & 0x10) >> 4));
 }
 
 void update_flags_cmp(CPU *cpu, uint8_t val) {
@@ -500,7 +511,7 @@ void update_flags_cmp(CPU *cpu, uint8_t val) {
     update_cy_flag_sub(cpu, cpu->a, val, false);
 }
 
-uint8_t parity(uint8_t val) {
+bool parity(uint8_t val) {
     uint8_t parity = 0;
     while(val) {
         parity += val & 1;

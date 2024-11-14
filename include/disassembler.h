@@ -329,11 +329,9 @@ void disassemble(CPU const * const cpu) {
 }
 
 void print_cpu_status(CPU const * const cpu) {
-    printf("A=%02hhx, B=%02hhx, C=%02hhx, D=%02hhx, E=%02hx, H=%02hhx, L=%02hhx, SP=%04hx\n", cpu->a, cpu->b, cpu->c, cpu->d, cpu->e, cpu->h, cpu->l, cpu->sp);
-    printf("FLAGS: %s %s %s %s %s\n", cpu->f.z?"z":"-", cpu->f.s?"s":"-", cpu->f.p?"p":"-", cpu->f.cy?"cy":"-", cpu->f.ac?"ac":"-");
+    printf("A=%02hhx, F=%02hhx, B=%02hhx, C=%02hhx, D=%02hhx, E=%02hx, H=%02hhx, L=%02hhx, SP=%04hx\n", cpu->a, cpu->f, cpu->b, cpu->c, cpu->d, cpu->e, cpu->h, cpu->l, cpu->sp);
+    printf("FLAGS: %s %s %s %s %s\n", get_flag(cpu, S)?"S ":"- ", get_flag(cpu, Z)?"Z ":"- ", get_flag(cpu, AC)?"AC":"- ", get_flag(cpu, P)?"P ":"- ", get_flag(cpu, CY)?"CY":"- ");
 }
-
-
 
 
 #endif // DISASSEMBLER_H

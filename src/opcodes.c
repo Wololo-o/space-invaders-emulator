@@ -8,7 +8,7 @@ void cpu_xchg(CPU *cpu) {
 }
 
 void cpu_add(CPU *cpu, uint8_t value, bool is_carry) {
-    bool carry_val = is_carry & cpu->f.cy;
+    bool carry_val = is_carry & get_flag(cpu, CY);
     update_ac_flag_add(cpu, cpu->a, value, is_carry);
     update_cy_flag_add(cpu, cpu->a, value, is_carry);
     cpu->a += value + (carry_val ? 1 : 0);
@@ -16,7 +16,7 @@ void cpu_add(CPU *cpu, uint8_t value, bool is_carry) {
 }
 
 void cpu_sub(CPU *cpu, uint8_t value, bool is_borrow) {
-    bool borrow_val = is_borrow & cpu->f.cy;
+    bool borrow_val = is_borrow & get_flag(cpu, CY);
     update_ac_flag_sub(cpu, cpu->a, value, is_borrow);
     update_cy_flag_sub(cpu, cpu->a, value, is_borrow);
     cpu->a -= value + (borrow_val ? 1 : 0);
@@ -37,8 +37,8 @@ void cpu_dcr(CPU *cpu, uint8_t * const rm) {
 
 void cpu_daa(CPU *cpu) {
     uint8_t to_add = 0;
-    if((cpu->a & 0x0f) > 9 || cpu->f.ac) to_add += 0x06;
-    if(((cpu->a + to_add) >> 4) > 9 || cpu->f.cy) to_add += 0x60;
+    if((cpu->a & 0x0f) > 9 || get_flag(cpu, AC)) to_add += 0x06;
+    if(((cpu->a + to_add) >> 4) > 9 || get_flag(cpu, CY)) to_add += 0x60;
     update_ac_flag_add(cpu, cpu->a, to_add, false);
     update_cy_flag_add(cpu, cpu->a, to_add, false);
     cpu->a += to_add;
@@ -48,43 +48,43 @@ void cpu_daa(CPU *cpu) {
 void cpu_ana(CPU *cpu, uint8_t * const rm) {
     cpu->a &= *rm;
     update_zsp_flags(cpu, cpu->a);
-    cpu->f.cy = 0;
-    cpu->f.ac = 0;
+    set_flag(cpu, CY, false);
+    set_flag(cpu, AC, false);
 }
 
 void cpu_ani(CPU *cpu) {
     cpu->a &= next_byte(cpu);
     update_zsp_flags(cpu, cpu->a);
-    cpu->f.cy = 0;
-    cpu->f.ac = 0;
+    set_flag(cpu, CY, false);
+    set_flag(cpu, AC, false);
 }
 
 void cpu_xra(CPU *cpu, uint8_t * const rm) {
     cpu->a ^= *rm;
     update_zsp_flags(cpu, cpu->a);
-    cpu->f.cy = 0;
-    cpu->f.ac = 0;
+    set_flag(cpu, CY, false);
+    set_flag(cpu, AC, false);
 }
 
 void cpu_xri(CPU *cpu) {
     cpu->a ^= next_byte(cpu);
     update_zsp_flags(cpu, cpu->a);
-    cpu->f.cy = 0;
-    cpu->f.ac = 0;
+    set_flag(cpu, CY, false);
+    set_flag(cpu, AC, false);
 }
 
 void cpu_ora(CPU *cpu, uint8_t * const rm) {
     cpu->a |= *rm;
     update_zsp_flags(cpu, cpu->a);
-    cpu->f.cy = 0;
-    cpu->f.ac = 0;
+    set_flag(cpu, CY, false);
+    set_flag(cpu, AC, false);
 }
 
 void cpu_ori(CPU *cpu) {
     cpu->a |= next_byte(cpu);
     update_zsp_flags(cpu, cpu->a);
-    cpu->f.cy = 0;
-    cpu->f.ac = 0;
+    set_flag(cpu, CY, false);
+    set_flag(cpu, AC, false);
 }
 
 void cpu_cmp(CPU *cpu, uint8_t * const rm) {
@@ -96,29 +96,29 @@ void cpu_cpi(CPU *cpu) {
 }
 
 void cpu_rlc(CPU *cpu) {
-    cpu->f.cy = (cpu->a >> 7);
+    set_flag(cpu, CY, (cpu->a & 0x80));
     cpu->a <<= 1;
-    cpu->a |= cpu->f.cy;
+    cpu->a |= get_flag(cpu, CY);
 }
 
 void cpu_rrc(CPU *cpu) {
-    cpu->f.cy = (cpu->a & 1);
+    set_flag(cpu, CY, cpu->a & 1);
     cpu->a >>= 1;
-    cpu->a |= (cpu->f.cy << 7);
+    cpu->a |= (get_flag(cpu, CY) << 7);
 }
 
 void cpu_ral(CPU *cpu) {
     uint8_t high_order_bit = cpu->a >> 7;
     cpu->a <<= 1;
-    cpu->a |= cpu->f.cy;
-    cpu->f.cy = high_order_bit;
+    cpu->a |= get_flag(cpu, CY);
+    set_flag(cpu, CY, high_order_bit);
 }
 
 void cpu_rar(CPU *cpu) {
     uint8_t low_order_bit = cpu->a & 1;
     cpu->a >>= 1;
-    cpu->a |= (cpu->f.cy << 7);
-    cpu->f.cy = low_order_bit;
+    cpu->a |= (get_flag(cpu, CY) << 7);
+    set_flag(cpu, CY, low_order_bit);
 }
 
 void cpu_call(CPU *cpu, bool condition) {
@@ -133,11 +133,11 @@ void cpu_call(CPU *cpu, bool condition) {
 void cpu_push_psw(CPU *cpu) {
     uint16_t to_push = 0;
     to_push |= (cpu->a << 8);
-    to_push |= cpu->f.cy;
-    to_push |= (cpu->f.p << 2);
-    to_push |= (cpu->f.ac << 4);
-    to_push |= (cpu->f.z << 6);
-    to_push |= (cpu->f.s << 7);
+    to_push |= get_flag(cpu, CY);
+    to_push |= (get_flag(cpu, P) << 2);
+    to_push |= (get_flag(cpu, AC) << 4);
+    to_push |= (get_flag(cpu, Z) << 6);
+    to_push |= (get_flag(cpu, S) << 7);
     to_push |= 2;
     push(cpu, to_push);
 }
@@ -145,11 +145,11 @@ void cpu_push_psw(CPU *cpu) {
 void cpu_pop_psw(CPU *cpu) {
     uint16_t psw = pop(cpu);
     cpu->a = psw >> 8;
-    cpu->f.cy = psw & 1;
-    cpu->f.p = (psw & 4) >> 2;
-    cpu->f.ac = (psw & 16) >> 4;
-    cpu->f.z = (psw & 64) >> 6;
-    cpu->f.s = (psw & 128) >> 7;
+    set_flag(cpu, CY, psw & 0x01);
+    set_flag(cpu, P, (psw & 0x04) >> 2);
+    set_flag(cpu, AC, (psw & 0x10) >> 4);
+    set_flag(cpu, Z, (psw & 0x40) >> 6);
+    set_flag(cpu, S, (psw & 0x80) >> 7);
 }
 
 void cpu_xthl(CPU *cpu) {
