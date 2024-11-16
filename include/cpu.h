@@ -79,10 +79,8 @@ void set_hl(CPU *cpu, uint16_t value);
 bool get_flag(CPU const * const cpu, flag_mask flag);
 void set_flag(CPU *cpu, flag_mask flag, bool set);
 void update_zsp_flags(CPU *cpu, uint8_t res);
-void update_cy_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry);
-void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow);
-void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry);
-void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow);
+void update_cy_flag(CPU *cpu, uint8_t val1, uint8_t val2, bool carry);
+void update_ac_flag(CPU *cpu, uint8_t val1, uint8_t val2, bool carry);
 void update_flags_cmp(CPU *cpu, uint8_t val);
 bool parity(uint8_t val);
 

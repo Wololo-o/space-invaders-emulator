@@ -175,16 +175,16 @@ void cpu_tick(CPU *cpu) {
 
     case ADI: cpu_add(cpu, next_byte(cpu), false); break;
 
-    case ADC_B: cpu_add(cpu, cpu->b, true); break;
-    case ADC_C: cpu_add(cpu, cpu->c, true); break;
-    case ADC_D: cpu_add(cpu, cpu->d, true); break;
-    case ADC_E: cpu_add(cpu, cpu->e, true); break;
-    case ADC_H: cpu_add(cpu, cpu->h, true); break;
-    case ADC_L: cpu_add(cpu, cpu->l, true); break;
-    case ADC_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), true); break;
-    case ADC_A: cpu_add(cpu, cpu->a, true); break;
+    case ADC_B: cpu_add(cpu, cpu->b, get_flag(cpu, CY)); break;
+    case ADC_C: cpu_add(cpu, cpu->c, get_flag(cpu, CY)); break;
+    case ADC_D: cpu_add(cpu, cpu->d, get_flag(cpu, CY)); break;
+    case ADC_E: cpu_add(cpu, cpu->e, get_flag(cpu, CY)); break;
+    case ADC_H: cpu_add(cpu, cpu->h, get_flag(cpu, CY)); break;
+    case ADC_L: cpu_add(cpu, cpu->l, get_flag(cpu, CY)); break;
+    case ADC_M: cpu_add(cpu, read_byte(cpu, get_hl(cpu)), get_flag(cpu, CY)); break;
+    case ADC_A: cpu_add(cpu, cpu->a, get_flag(cpu, CY)); break;
 
-    case ACI: cpu_add(cpu, next_byte(cpu), true); break;
+    case ACI: cpu_add(cpu, next_byte(cpu), get_flag(cpu, CY)); break;
     
     case SUB_B: cpu_sub(cpu, cpu->b, false); break;
     case SUB_C: cpu_sub(cpu, cpu->c, false); break;
@@ -197,16 +197,16 @@ void cpu_tick(CPU *cpu) {
 
     case SUI: cpu_sub(cpu, next_byte(cpu), false); break;
 
-    case SBB_B: cpu_sub(cpu, cpu->b, true); break;
-    case SBB_C: cpu_sub(cpu, cpu->c, true); break;
-    case SBB_D: cpu_sub(cpu, cpu->d, true); break;
-    case SBB_E: cpu_sub(cpu, cpu->e, true); break;
-    case SBB_H: cpu_sub(cpu, cpu->h, true); break;
-    case SBB_L: cpu_sub(cpu, cpu->l, true); break;
-    case SBB_M: cpu_sub(cpu, read_byte(cpu, get_hl(cpu)), true); break;
-    case SBB_A: cpu_sub(cpu, cpu->a, true); break;
+    case SBB_B: cpu_sub(cpu, cpu->b, get_flag(cpu, CY)); break;
+    case SBB_C: cpu_sub(cpu, cpu->c, get_flag(cpu, CY)); break;
+    case SBB_D: cpu_sub(cpu, cpu->d, get_flag(cpu, CY)); break;
+    case SBB_E: cpu_sub(cpu, cpu->e, get_flag(cpu, CY)); break;
+    case SBB_H: cpu_sub(cpu, cpu->h, get_flag(cpu, CY)); break;
+    case SBB_L: cpu_sub(cpu, cpu->l, get_flag(cpu, CY)); break;
+    case SBB_M: cpu_sub(cpu, read_byte(cpu, get_hl(cpu)), get_flag(cpu, CY)); break;
+    case SBB_A: cpu_sub(cpu, cpu->a, get_flag(cpu, CY)); break;
 
-    case SBI: cpu_sub(cpu, next_byte(cpu), true); break;
+    case SBI: cpu_sub(cpu, next_byte(cpu), get_flag(cpu, CY)); break;
 
     case INR_B: cpu_inr(cpu, &cpu->b); break;
     case INR_C: cpu_inr(cpu, &cpu->c); break;
@@ -294,8 +294,8 @@ void cpu_tick(CPU *cpu) {
     case RAR: cpu_rar(cpu); break;
 
     case CMA: cpu->a = ~cpu->a; break;
-    case CMC: set_flag(cpu, CY, !get_flag(cpu, CY)); break;
 
+    case CMC: set_flag(cpu, CY, !get_flag(cpu, CY)); break;
     case STC: set_flag(cpu, CY, true); break;
 
     // Branch group
@@ -475,36 +475,26 @@ void set_flag(CPU *cpu, flag_mask flag, bool set) {
 }
 
 void update_zsp_flags(CPU *cpu, uint8_t res) {
-
     set_flag(cpu, Z, !res);
     set_flag(cpu, S, (res >> 7) & 1);
     set_flag(cpu, P, parity(res));
 }
 
-void update_cy_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
-    uint16_t res = val1 + val2 + (is_carry & get_flag(cpu, CY));
+void update_cy_flag(CPU *cpu, uint8_t val1, uint8_t val2, bool carry) {
+    uint16_t res = val1 + val2 + carry;
     set_flag(cpu, CY, (res > 0xff));
 }
 
-void update_cy_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
-    uint16_t res = val1 - val2 - (is_borrow & get_flag(cpu, CY));
-    set_flag(cpu, CY, (res > 0xff));
-}
-
-void update_ac_flag_add(CPU *cpu, uint8_t val1, uint8_t val2, bool is_carry) {
-    uint8_t res = (val1 & 0xf) + (val2 & 0xf) + (is_carry & get_flag(cpu, CY));
-    set_flag(cpu, AC, ((res & 0x10) >> 4));
-}
-
-void update_ac_flag_sub(CPU *cpu, uint8_t val1, uint8_t val2, bool is_borrow) {
-    uint8_t res = (val1 & 0x0f) - (val2 & 0x0f) - (is_borrow & get_flag(cpu, CY));
-    set_flag(cpu, AC, ((res & 0x10) >> 4));
+void update_ac_flag(CPU *cpu, uint8_t val1, uint8_t val2, bool carry) {
+    uint8_t res = (val1 & 0xf) + (val2 & 0xf) + carry;
+    set_flag(cpu, AC, (res & 0x10));
 }
 
 void update_flags_cmp(CPU *cpu, uint8_t val) {
     update_zsp_flags(cpu, cpu->a - val);
-    update_ac_flag_sub(cpu, cpu->a, val, false);
-    update_cy_flag_sub(cpu, cpu->a, val, false);
+    update_ac_flag(cpu, cpu->a, ~val, true);
+    update_cy_flag(cpu, cpu->a, ~val, true);
+    set_flag(cpu, CY, !get_flag(cpu, CY));
 }
 
 bool parity(uint8_t val) {

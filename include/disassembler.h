@@ -322,15 +322,19 @@ void init_instr_size() {
 }
 
 void disassemble(CPU const * const cpu) {
-    printf("%04hx: %s", cpu->pc, instruction_name[cpu->memory[cpu->pc]]);
-    if(instruction_size[cpu->memory[cpu->pc]] > 1) printf(" %02hx", cpu->memory[cpu->pc+1]);
+    printf("%04hx: %s ", cpu->pc, instruction_name[cpu->memory[cpu->pc]]);
     if(instruction_size[cpu->memory[cpu->pc]] > 2) printf("%02hx", cpu->memory[cpu->pc+2]);
-    printf("\n");
+    if(instruction_size[cpu->memory[cpu->pc]] > 1) printf("%02hx", cpu->memory[cpu->pc+1]);
+    printf("\t\t(%02hhx", cpu->memory[cpu->pc]);
+    if(instruction_size[cpu->memory[cpu->pc]] > 1) printf(" %02hx", cpu->memory[cpu->pc+1]);
+    if(instruction_size[cpu->memory[cpu->pc]] > 2) printf(" %02hx", cpu->memory[cpu->pc+2]);
+    printf(")\n");
 }
 
 void print_cpu_status(CPU const * const cpu) {
     printf("A=%02hhx, F=%02hhx, B=%02hhx, C=%02hhx, D=%02hhx, E=%02hx, H=%02hhx, L=%02hhx, SP=%04hx\n", cpu->a, cpu->f, cpu->b, cpu->c, cpu->d, cpu->e, cpu->h, cpu->l, cpu->sp);
     printf("FLAGS: %s %s %s %s %s\n", get_flag(cpu, S)?"S ":"- ", get_flag(cpu, Z)?"Z ":"- ", get_flag(cpu, AC)?"AC":"- ", get_flag(cpu, P)?"P ":"- ", get_flag(cpu, CY)?"CY":"- ");
+    printf("Cycles = %ld\n", cpu->cycle_count);
 }
 
 

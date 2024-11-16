@@ -7,42 +7,46 @@ void cpu_xchg(CPU *cpu) {
     set_de(cpu, tmp);
 }
 
-void cpu_add(CPU *cpu, uint8_t value, bool is_carry) {
-    bool carry_val = is_carry & get_flag(cpu, CY);
-    update_ac_flag_add(cpu, cpu->a, value, is_carry);
-    update_cy_flag_add(cpu, cpu->a, value, is_carry);
-    cpu->a += value + (carry_val ? 1 : 0);
+void cpu_add(CPU *cpu, uint8_t value, bool cy) {
+    update_ac_flag(cpu, cpu->a, value, cy);
+    update_cy_flag(cpu, cpu->a, value, cy);
+    cpu->a += value + cy;
     update_zsp_flags(cpu, cpu->a);
 }
 
-void cpu_sub(CPU *cpu, uint8_t value, bool is_borrow) {
-    bool borrow_val = is_borrow & get_flag(cpu, CY);
-    update_ac_flag_sub(cpu, cpu->a, value, is_borrow);
-    update_cy_flag_sub(cpu, cpu->a, value, is_borrow);
-    cpu->a -= value + (borrow_val ? 1 : 0);
-    update_zsp_flags(cpu, cpu->a);
+void cpu_sub(CPU *cpu, uint8_t value, bool cy) {
+    cpu_add(cpu, (~value), !cy);
+    set_flag(cpu, CY, !get_flag(cpu, CY));
 }
 
 void cpu_inr(CPU *cpu, uint8_t * const rm) {
-    update_ac_flag_add(cpu, *rm, 1, false);
+    update_ac_flag(cpu, *rm, 1, false);
     ++(*rm);
     update_zsp_flags(cpu, *rm);
 }
 
 void cpu_dcr(CPU *cpu, uint8_t * const rm) {
-    update_ac_flag_sub(cpu, *rm, 1, false);
+    update_ac_flag(cpu, *rm, ~1, true);
     --(*rm);
     update_zsp_flags(cpu, *rm);
 }
 
 void cpu_daa(CPU *cpu) {
+    bool cy = get_flag(cpu, CY);
     uint8_t to_add = 0;
-    if((cpu->a & 0x0f) > 9 || get_flag(cpu, AC)) to_add += 0x06;
-    if(((cpu->a + to_add) >> 4) > 9 || get_flag(cpu, CY)) to_add += 0x60;
-    update_ac_flag_add(cpu, cpu->a, to_add, false);
-    update_cy_flag_add(cpu, cpu->a, to_add, false);
-    cpu->a += to_add;
-    update_zsp_flags(cpu, cpu->a);
+
+    uint8_t low_nibble = cpu->a & 0x0f;
+    uint8_t high_nibble = cpu->a >> 4;
+
+    if(low_nibble > 9 || get_flag(cpu, AC)) to_add += 0x06;
+
+    if(high_nibble > 9 || get_flag(cpu, CY) || (high_nibble >= 9 && low_nibble > 9)) {
+        to_add += 0x60;
+        cy = true;
+    }
+
+    cpu_add(cpu, to_add, false);
+    set_flag(cpu, CY, cy);
 }
 
 void cpu_ana(CPU *cpu, uint8_t * const rm) {

@@ -40,7 +40,7 @@ int main(int argc, char const *argv[]) {
 
     cpu_init(&cpu);
 
-    cpu_load_rom_at(&cpu, "../roms/tests/CPUTEST.COM", 0x100);
+    cpu_load_rom_at(&cpu, "../roms/tests/8080EXM.COM", 0x100);
     cpu.pc = 0x100;
 
     cpu.out_ports[0] = test_end;
