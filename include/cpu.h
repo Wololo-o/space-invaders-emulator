@@ -45,7 +45,9 @@ typedef struct CPU {
 
     bool hlt;
     bool interrupts_enabled;
+    bool interrupt_requested;
     uint8_t enabling_interrputs_timer;
+    uint8_t interrupt_op;
     long cycle_count;
 
     bool exit;
@@ -60,6 +62,7 @@ uint8_t next_byte(CPU *cpu);
 uint16_t next_word(CPU *cpu);
 void push(CPU *cpu, uint16_t value);
 uint16_t pop(CPU *cpu);
+void interrupt(CPU *cpu, uint8_t opcode);
 
 // Memory read/write helper functions
 uint8_t read_byte(CPU *cpu, uint16_t address);

@@ -35,9 +35,10 @@ void cpu_init(CPU *cpu) {
         cpu->memory[i] = 0;
     }
 
-    cpu->hlt = cpu->interrupts_enabled = false;
+    cpu->hlt = cpu->interrupts_enabled = cpu->interrupt_requested = false;
     cpu->enabling_interrputs_timer = 0;
     cpu->cycle_count = 0;
+    cpu->interrupt_op = 0;
 }
 
 bool cpu_load_rom_at(CPU *cpu, char const *filename, uint16_t start) {
@@ -58,7 +59,15 @@ bool cpu_load_rom_at(CPU *cpu, char const *filename, uint16_t start) {
 }
 
 void cpu_tick(CPU *cpu) {
-    uint8_t opcode = cpu->memory[cpu->pc++];
+    uint8_t opcode;
+    
+    if(cpu->interrupt_requested && cpu->interrupts_enabled) {
+        opcode = cpu->interrupt_op;
+        cpu->interrupts_enabled = false;
+        cpu->interrupt_requested = false;
+    } else {
+        opcode = cpu->memory[cpu->pc++];
+    }
 
     cpu->cycle_count += operation_cycle[opcode];
 
@@ -417,6 +426,11 @@ void push(CPU *cpu, uint16_t value) {
 uint16_t pop(CPU *cpu) {
     cpu->sp += 2;
     return read_word(cpu, cpu->sp -2);
+}
+
+void interrupt(CPU *cpu, uint8_t opcode) {
+    cpu->interrupt_requested = true;
+    cpu->interrupt_op = opcode;
 }
 
 uint8_t read_byte(CPU *cpu, uint16_t address) {
