@@ -23,8 +23,6 @@ const uint8_t operation_cycle[256] = {
 };
 
 void cpu_init(CPU *cpu) {
-    cpu->exit = false;
-
     cpu->a = cpu->b = cpu->c = cpu->d = cpu->e = cpu->h = cpu->l = 0;
 
     cpu->pc = cpu->sp = 0;
@@ -60,7 +58,7 @@ bool cpu_load_rom_at(CPU *cpu, char const *filename, uint16_t start) {
 
 void cpu_tick(CPU *cpu) {
     uint8_t opcode;
-    
+
     if(cpu->interrupt_requested && cpu->interrupts_enabled) {
         opcode = cpu->interrupt_op;
         cpu->interrupts_enabled = false;
@@ -360,7 +358,7 @@ void cpu_tick(CPU *cpu) {
     case RST_6:
     case RST_7:
         push(cpu, cpu->pc);
-        cpu->pc = (opcode >> 3) & 7;
+        cpu->pc = (opcode & 0x38);
         break;
 
     case PCHL: cpu->pc = get_hl(cpu); break;

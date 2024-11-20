@@ -49,8 +49,6 @@ typedef struct CPU {
     uint8_t enabling_interrputs_timer;
     uint8_t interrupt_op;
     long cycle_count;
-
-    bool exit;
 } CPU;
 
 // Helper functions
