@@ -36,7 +36,7 @@ void print_40_bytes(uint16_t start) {
     printf("\n");
 }
 
-int main(int argc, char const *argv[]) {
+int main() {
 
     cpu_init(&cpu);
 
