@@ -41,6 +41,11 @@
 #define VRAM_START 0x2400
 #define VRAM_SIZE (SCREEN_HEIGHT * (SCREEN_WIDTH / 8))
 
+// GAME SPEED CONSTANTS
+#define CPU_FREQU 2000000
+#define GAME_FRAME_RATE 60
+#define VERTICAL_BLANK_FREQ (CPU_FREQU / GAME_FRAME_RATE)
+
 
 // I/O functions
 uint8_t read_inp1();
@@ -55,6 +60,10 @@ void write_watchdog(uint8_t data);
 
 
 void draw_pixel(SDL_Surface *surface, int x, int y, long color);
+void draw_byte(SDL_Surface *surface, CPU const * const cpu, uint16_t byte_n);
+void draw_col(SDL_Surface *surface, CPU const * const cpu, uint8_t col_n);
 void draw_screen(SDL_Window *window, SDL_Surface *surface, CPU const * const cpu);
+
+bool handle_input();
 
 #endif
