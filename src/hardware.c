@@ -60,7 +60,7 @@ void draw_screen(SDL_Window *window, SDL_Surface *surface, CPU const * const cpu
     for(byte_n = 0; byte_n < VRAM_SIZE; ++byte_n) {
         x_b = (byte_n / 32) * SCREEN_MULTIPLIER;
         for(bit_n = 0; bit_n < 8; ++bit_n) {
-            y_b = (SCREEN_HEIGHT * SCREEN_MULTIPLIER) - 1 - ((byte_n & 0x1f) * 8 * SCREEN_MULTIPLIER) - ((7 - bit_n) * SCREEN_MULTIPLIER);
+            y_b = ((SCREEN_HEIGHT - 1) * SCREEN_MULTIPLIER) - ((byte_n & 0x1f) * 8 * SCREEN_MULTIPLIER) - ((7 - bit_n) * SCREEN_MULTIPLIER);
 
             // select pixel color
             color = ((cpu->memory[VRAM_START + byte_n] >> (7 - bit_n)) & 1) ? 0xffffffff : 0xff000000;
