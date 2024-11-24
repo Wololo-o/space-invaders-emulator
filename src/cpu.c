@@ -29,7 +29,7 @@ void cpu_init(CPU *cpu) {
 
     clear_flags(cpu);
 
-    for(int i = 0; i <= MEM_SIZE; ++i) {
+    for(int i = 0; i < MEM_SIZE; ++i) {
         cpu->memory[i] = 0;
     }
 
@@ -40,20 +40,33 @@ void cpu_init(CPU *cpu) {
 }
 
 bool cpu_load_rom_at(CPU *cpu, char const *filename, uint16_t start) {
-    FILE *f = fopen(filename, "rb");
+    bool result = true;
+    FILE *f = NULL;
+    int fsize = 0;
+    uint8_t *buffer = NULL;
+
+    f = fopen(filename, "rb");
+
     if (f == NULL) {
-        return false;
+        result = false;
     }
 
-    fseek(f, 0L, SEEK_END);
-    int fsize = ftell(f);
-    fseek(f, 0L, SEEK_SET);
+    if(result) {
+        fseek(f, 0L, SEEK_END);
+        fsize = ftell(f);
+        fseek(f, 0L, SEEK_SET);
 
-    uint8_t *buffer = cpu->memory + start;
-    fread(buffer, fsize, 1, f);
-    fclose(f);
+        buffer = cpu->memory + start;
 
-    return true;
+        if(fread(buffer, fsize, 1, f) != 1) {
+            result = false;
+        }
+
+        fclose(f);
+
+    }
+
+    return result;
 }
 
 void cpu_tick(CPU *cpu) {
