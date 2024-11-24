@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 bool init_SDL() {
-	return SDL_Init(SDL_INIT_VIDEO);
+	return SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == 0;
 }
 
 SDL_Window *create_window() {
@@ -44,7 +44,7 @@ int main() {
 
 	init_port(&cpu);
 
-	if(init_SDL() != 0) {
+	if(!init_SDL()) {
 		fprintf(stderr, "Error during SDL initialization: %s\n", SDL_GetError());
 		return 2;
 	}
@@ -61,6 +61,10 @@ int main() {
         fprintf(stderr, "Could not create SDL surface: %s\n", SDL_GetError());
         return 4;
     }
+
+	if(!init_audio()) {
+		fprintf(stderr, "Error in SDL_Mixer initialization\n");
+	}
 
 	while(running) {
 		draw_screen(window, surface, &cpu);
@@ -84,6 +88,7 @@ int main() {
 
 	SDL_FreeSurface(surface);
 	SDL_DestroyWindow(window);
+	quit_audio();
 	SDL_Quit();
 
     return 0;

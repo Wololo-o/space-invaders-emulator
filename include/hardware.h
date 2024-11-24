@@ -32,6 +32,20 @@
 #define LEFT_P2 0x20
 #define RIGHT_P2 0x40
 
+//OUTPUT 3
+#define UFO_SOUND 0x01
+#define SHOT_SOUND 0x02
+#define PLAYER_DEATH_SOUND 0x04
+#define INVADER_DEATH_SOUND 0x08
+#define EXTENDED_PLAY_SOUND 0x10
+
+// OUTPUT 5
+#define FLEET_MOV_1_SOUND 0x01
+#define FLEET_MOV_2_SOUND 0x02
+#define FLEET_MOV_3_SOUND 0x04
+#define FLEET_MOV_4_SOUND 0x08
+#define UFO_HIT_SOUND 0x10
+
 
 // SCREEN DIMENSIONS
 #define SCREEN_HEIGHT 256
@@ -47,6 +61,19 @@
 #define VERTICAL_BLANK_FREQ (CPU_FREQU / GAME_FRAME_RATE)
 
 
+// SOUND EFFECT INDICES
+#define UFO_SOUND_I 0
+#define SHOT_SOUND_I 1
+#define PLAYER_DEATH_SOUND_I 2
+#define INVADER_DEATH_SOUND_I 3
+#define EXTENDED_PLAY_SOUND_I 4
+#define FLEET_MOV_1_SOUND_I 5
+#define FLEET_MOV_2_SOUND_I 6
+#define FLEET_MOV_3_SOUND_I 7
+#define FLEET_MOV_4_SOUND_I 8
+#define UFO_HIT_SOUND_I 9
+
+
 // I/O functions
 uint8_t read_inp1();
 uint8_t read_inp2();
@@ -60,9 +87,10 @@ void write_watchdog(uint8_t data);
 
 
 void draw_pixel(SDL_Surface *surface, int x, int y, long color);
-void draw_byte(SDL_Surface *surface, CPU const * const cpu, uint16_t byte_n);
-void draw_col(SDL_Surface *surface, CPU const * const cpu, uint8_t col_n);
 void draw_screen(SDL_Window *window, SDL_Surface *surface, CPU const * const cpu);
+
+bool init_audio();
+void quit_audio();
 
 bool handle_input();
 
