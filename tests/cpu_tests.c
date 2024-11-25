@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "cpu.h"
 #include "opcodes.h"
@@ -10,6 +11,7 @@
 
 CPU cpu;
 static bool end = false;
+static bool debug = false;
 
 void test_end(uint8_t data) {
     (void) data;
@@ -36,11 +38,10 @@ void print_40_bytes(uint16_t start) {
     printf("\n");
 }
 
-int main() {
-
+void run_test(char const * filename) {
     cpu_init(&cpu);
 
-    cpu_load_rom_at(&cpu, "../roms/tests/8080EXM.COM", 0x100);
+    cpu_load_rom_at(&cpu, filename, 0x100);
     cpu.pc = 0x100;
 
     cpu.out_ports[0] = test_end;
@@ -52,27 +53,41 @@ int main() {
     cpu.memory[0x5 + 1] = 0x01;
     cpu.memory[0x5 + 2] = RET;
 
-    // cpu.memory[368] = 0x7;
+    end = false;
 
-    cpu.pc = 0x100;
-
-    #ifdef DEBUG_ON
-        init_instr_size();
-    #endif
+    printf("\n===RUN TEST %s===\n", filename);
 
     while(!end) {
-        #ifdef DEBUG_ON
+        if(debug) {
             print_cpu_status(&cpu);
             disassemble(&cpu);
             cpu_tick(&cpu);
             getchar();
-        #else
+        } else {
             cpu_tick(&cpu);
-        #endif
-
+        }
     }
 
     printf("\n");
+}
+
+int main(int argc, char **argv) {
+
+    if(argc > 2 || (argc == 2 && (atoi(argv[1]) != 0) && (atoi(argv[1]) != 1))) {
+        printf("Usage: ./cpu-tests [0 | 1]\n0 is for no debug and 1 for debug. It is 0 by default.\n");
+        return 1;
+    }
+    
+    if(argc == 2 && atoi(argv[1]) == 1)
+        debug = true;
+
+    if(debug)
+        init_instr_size();
+    
+    run_test("../roms/tests/TST8080.COM");
+    run_test("../roms/tests/CPUTEST.COM");
+    run_test("../roms/tests/8080PRE.COM");
+    run_test("../roms/tests/8080EXM.COM");
 
     return 0;
 }
