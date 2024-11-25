@@ -3,6 +3,8 @@ Space Invaders emulator written in C with SDL2.
 
 Personal project to get a first experience in the world of emulation.
 
+![Space Invaders Emulator screenshot](screenshots/screenshot.png)
+
 ## Requirements
 To build this program, you need the followings:
 - cmake
